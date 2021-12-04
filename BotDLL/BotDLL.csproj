@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\QuickCharts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DisCatSharp" Version="9.8.4" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.4" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="9.8.4" />
+    <PackageReference Include="DisCatSharp.Common" Version="9.8.4" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="9.8.4" />
+    <PackageReference Include="MineStat" Version="2.1.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.27" />
+    <PackageReference Include="Okolni.Source.Query" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
