@@ -316,7 +316,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
+                if (dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id)
                     found = true;
             }
 
