@@ -38,7 +38,7 @@ namespace BotDLL.Persistence
         }
         public static void Change(DC_Userdata dC_UserdataObj)
         {
-            string sqlCommand = $"UPDATE DC_Userdata SET Abo={dC_UserdataObj.Abo}, MinimalAbo={dC_UserdataObj.MinimalAbo} WHERE ServerInfoId={dC_UserdataObj.ServerInfoId}";
+            string sqlCommand = $"UPDATE DC_Userdata SET Abo={dC_UserdataObj.Abo}, MinimalAbo={dC_UserdataObj.MinimalAbo} WHERE AuthorId={dC_UserdataObj.AuthorId} AND ChannelId={dC_UserdataObj.ChannelId} AND ServerInfoId={dC_UserdataObj.ServerInfoId}";
             DB_Connection.ExecuteNonQuery(sqlCommand);
         }
         public static void CreateTable_Userdata()

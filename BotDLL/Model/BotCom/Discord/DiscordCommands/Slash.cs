@@ -316,7 +316,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id)
+                if (dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
                     found = true;
             }
 
@@ -431,7 +431,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                     string aboType = "FULL";
                     if (dC_UserdataObjItem.MinimalAbo)
                         aboType = "MINIMAL";
-                        
+
                     servers += $"{serverInfoName,-15} {aboType,7} \n";
                 }
 
@@ -451,7 +451,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
         }
-        
+
 
         /// <summary>
         /// Testst the functionality of the DCChange [player, status, version]
