@@ -426,32 +426,27 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
                 string serverInfoName = serverInfoList.First(firstMatch => firstMatch.Id == dC_UserdataObjItem.ServerInfoId).Name;
 
-                if (!servers.Contains(serverInfoName))
-                {
-                    string aboType = "FULL";
-                    if (dC_UserdataObjItem.MinimalAbo)
-                        aboType = "MINIMAL";
+                string aboType = "FULL";
+                if (dC_UserdataObjItem.MinimalAbo)
+                    aboType = "MINIMAL";
 
-                    servers += $"{serverInfoName,-15} {aboType,7} \n";
-                }
+                if (!servers.Contains(serverInfoName))
+                    servers += $"{aboType} - {serverInfoName}\n";
 
                 if (lastChannel != dC_UserdataObjItem.ChannelId)
                 {
                     discordEmbedBuilder.AddField(servers, "<#" + lastChannel.ToString() + ">");
                     servers = "";
-                    servers += serverInfoName + "\n";
+                    servers += $"{aboType} - {serverInfoName}\n";
                     lastChannel = dC_UserdataObjItem.ChannelId;
                 }
 
                 if (dC_UserdataListAboSorted.Last() == dC_UserdataObjItem)
-                {
                     discordEmbedBuilder.AddField(servers, "<#" + lastChannel.ToString() + ">");
-                }
             }
 
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
         }
-
 
         /// <summary>
         /// Testst the functionality of the DCChange [player, status, version]
