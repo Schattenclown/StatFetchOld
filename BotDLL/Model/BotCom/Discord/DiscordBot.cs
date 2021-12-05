@@ -290,9 +290,8 @@ namespace BotDLL.Model.BotCom.Discord
                 Color = new DiscordColor(255, 0, 255)
             };
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
-            discordEmbedBuilder.WithAuthor($"StatFetch");
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
-            discordEmbedBuilder.WithTimestamp(DateTime.Now);
+            discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
 
             foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
             {
@@ -300,15 +299,12 @@ namespace BotDLL.Model.BotCom.Discord
                 {
                     if (!once)
                     {
-                        discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}");
-                        discordEmbedBuilder.AddField("Game", serverStatObj.Game, false);
-                        discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}");
                         if (whatchanged == "player")
                         {
-                            discordEmbedBuilder.WithAuthor($"StatFetch Player count changed!");
+                            //discordEmbedBuilder.WithAuthor($"StatFetch Player count changed!");
+                            discordEmbedBuilder.WithAuthor("Player count changed to ", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}");
                             discordEmbedBuilder.Title = $"{serverStatObj.Name}";
                             discordEmbedBuilder.Color = DiscordColor.Gold;
-                            discordEmbedBuilder.AddField("Player count changed to ", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}");
                         }
                         else if (whatchanged == "status")
                         {
@@ -325,12 +321,15 @@ namespace BotDLL.Model.BotCom.Discord
                         }
                         else if (whatchanged == "version")
                         {
-                            discordEmbedBuilder.WithAuthor($"StatFetch Version changed!");
+                            //discordEmbedBuilder.WithAuthor($"StatFetch Version changed!");
+                            discordEmbedBuilder.WithAuthor("Serverversion changed to ", $"{serverStatObj.Version}");
                             discordEmbedBuilder.Title = $"{serverStatObj.Name}";
                             discordEmbedBuilder.Color = DiscordColor.Gray;
-                            discordEmbedBuilder.AddField("Serverversion changed to ", $"{serverStatObj.Version}");
                         }
 
+                        discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}");
+                        discordEmbedBuilder.AddField("Game", serverStatObj.Game, false);
+                        discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}");
                         once = true;
                     }
                     if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataObjItem.ChannelId)))

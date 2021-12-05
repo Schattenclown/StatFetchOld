@@ -119,7 +119,7 @@ namespace StatFetch
                 }
 
                 counter++;
-                await Task.Delay(1000);
+                await Task.Delay(2000);
             }
         }
     }
