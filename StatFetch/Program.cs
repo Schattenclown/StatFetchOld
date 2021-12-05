@@ -16,11 +16,13 @@ namespace StatFetch
             #region ConsoleSize
             try
             {
+#pragma warning disable CA1416 // Plattformkompatibilität überprüfen
                 Console.SetWindowSize(210, 49);
             }
             catch (Exception)
             {
                 Console.SetWindowSize(100, 10);
+#pragma warning restore CA1416 // Plattformkompatibilität überprüfen
             }
             #endregion
 
@@ -33,7 +35,7 @@ namespace StatFetch
 
             while (true)
             {
-                if (counter == 10)
+                if (counter == 60)
                 {
                     serverInfoList = ServerInfo.ReadAll();
                     counter = 0;
@@ -66,53 +68,46 @@ namespace StatFetch
                     foreach (ServerStat serverStatObjCompare1 in serverStatListCompare1)
                     {
 
-                        if (serverStatObjCompare0.Id == serverStatObjCompare1.Id && serverStatObjCompare0.Players != serverStatObjCompare1.Players)
+                        if(serverStatObjCompare0.Id == serverStatObjCompare1.Id)
                         {
-                            consoleString = "";
+                            if(serverStatObjCompare0.ServerUp != serverStatObjCompare1.ServerUp || serverStatObjCompare0.Players != serverStatObjCompare1.Players)
+                            {
+                                consoleString = "";
+                                if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
+                                {
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                    consoleString += serverStatObjCompare0 + "\n";
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                    consoleString += serverStatObjCompare1 + "\n";
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                }
+                                else
+                                {
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                    consoleString += serverStatObjCompare1 + "\n";
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                    consoleString += serverStatObjCompare0 + "\n";
+                                    consoleString += "".PadLeft(207, '█') + "\n";
+                                }
 
-                            if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
-                            {
-                                DiscordBot.DCChange(serverStatObjCompare0, "player");
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare0 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare1 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                            }
-                            else
-                            {
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare1 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare0 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                DiscordBot.DCChange(serverStatObjCompare1, "player");
-                            }
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write(consoleString);
+                                Console.ForegroundColor = ConsoleColor.Gray;
 
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write(consoleString);
-                            Console.ForegroundColor = ConsoleColor.Gray;
-                        }
-                        if(serverStatObjCompare0.Id == serverStatObjCompare1.Id && serverStatObjCompare0.ServerUp != serverStatObjCompare1.ServerUp)
-                        {
-                            consoleString = "";
-                            if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
-                            {
-                                DiscordBot.DCChange(serverStatObjCompare0, "status");
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare0 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare1 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                            }
-                            else
-                            {
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare1 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                consoleString += serverStatObjCompare0 + "\n";
-                                consoleString += "".PadLeft(207, '█') + "\n";
-                                DiscordBot.DCChange(serverStatObjCompare1, "status");
+                                if(serverStatObjCompare0.ServerUp != serverStatObjCompare1.ServerUp)
+                                {
+                                    if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
+                                        DiscordBot.DCChange(serverStatObjCompare0, "status");
+                                    else
+                                        DiscordBot.DCChange(serverStatObjCompare1, "status");
+                                }
+                                else if (serverStatObjCompare0.Players != serverStatObjCompare1.Players)
+                                {
+                                    if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
+                                        DiscordBot.DCChange(serverStatObjCompare0, "player");
+                                    else
+                                        DiscordBot.DCChange(serverStatObjCompare1, "player");
+                                }
                             }
                         }
                     }

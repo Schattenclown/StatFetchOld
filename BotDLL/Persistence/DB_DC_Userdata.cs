@@ -45,7 +45,9 @@ namespace BotDLL.Persistence
         {
             Connections connetions = CSV_Connections.ReadAll();
 
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
             string database = WordCutter.RemoveUntilWord(connetions.MySqlConStr, "Database=", 9);
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
 #if DEBUG
             database = WordCutter.RemoveUntilWord(connetions.MySqlConStrDebug, "Database=", 9);
 #endif

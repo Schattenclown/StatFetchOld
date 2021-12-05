@@ -50,7 +50,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("42", "Show´s every Server with their informations", true)]
         public static async Task ShowServerStatusAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(FourtytwoTypeChoiceProvider))][Option("Type", "Type")] string fourtytwoChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
@@ -62,7 +62,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             var fourtytwoTypeChoiceProvider = new FourtytwoTypeChoiceProvider();
             var fourtytwoTypeChoices = await fourtytwoTypeChoiceProvider.Provider();
 
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             if ("STATISTICS".ToLower() == fourtytwoTypeChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == fourtytwoChoice.ToLower()).Name.ToLower())
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             {
                 DiscordEmbedBuilder discordEmbedBuilder = new();
                 discordEmbedBuilder.Title = "Statistics N/A";
@@ -70,28 +72,29 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             }
             else
             {
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 bool isFull = "FULL".ToLower() == (fourtytwoTypeChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == fourtytwoChoice.ToLower()).Name.ToLower());
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
 
                 foreach (ServerStat serverStatObj in serverStatListLive)
                 {
                     DiscordEmbedBuilder discordEmbedBuilder = new();
                     discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
-                    discordEmbedBuilder.Title = "Status";
-                    discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}");
-                    discordEmbedBuilder.AddField("Game", serverStatObj.Game, false);
+                    discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
+                    discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
                     discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
                     discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
 
 
                     if (serverStatObj.ServerUp == true)
                     {
-                        discordEmbedBuilder.AddField("ServerUp", $"Online", false);
+                        discordEmbedBuilder.AddField("ServerUp", $"Online", true);
                         discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
                         discordEmbedBuilder.Color = DiscordColor.Green;
                     }
                     else
                     {
-                        discordEmbedBuilder.AddField("ServerUp", $"Offline", false);
+                        discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
                         discordEmbedBuilder.AddField("Version", "N/A", true);
                         discordEmbedBuilder.Color = DiscordColor.Red;
                     }
@@ -113,11 +116,11 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         /// <summary>
         /// Show´s the server list
         /// </summary>
-        /// <param name="interationContext">The interaction context.</param>
+        /// <param name="interactionContext">The interaction context.</param>
         [SlashCommand("list", "Show´s the server list", true)]
-        public static async Task ListAsync(InteractionContext interationContext)
+        public static async Task ListAsync(InteractionContext interactionContext)
         {
-            await interationContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
@@ -135,7 +138,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             foreach (ServerStat serverStatObj in serverStatListLive)
             {
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 discordEmbedBuilder.AddField(serverStatObj.Name.ToUpper(), serverStatObj.Game.ToUpper());
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
 
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
@@ -143,7 +148,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(DateTime.Now);
 
-            await interationContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
+            await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
         }
 
         /// <summary>
@@ -154,18 +159,22 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("status", "Show´s status from a singel server")]
         public static async Task StatusAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "status")] string serverNameChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
             foreach (ServerInfo serverInfoObjItem in serverInfoList)
             {
                 serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                     break;
             }
 
@@ -173,22 +182,22 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 Title = "Status"
             };
-            discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}");
-            discordEmbedBuilder.AddField("Game", serverStatObj.Game, false);
+            discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
+            discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
             discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
             discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
 
             if (serverStatObj.ServerUp == true)
             {
-                discordEmbedBuilder.AddField("ServerUp", $"Online", false);
+                discordEmbedBuilder.AddField("ServerUp", $"Online", true);
                 discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
                 discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
                 discordEmbedBuilder.Color = DiscordColor.Green;
             }
             else
             {
-                discordEmbedBuilder.AddField("ServerUp", $"Offline", false);
+                discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
                 discordEmbedBuilder.AddField("Players", "N/A", true);
                 discordEmbedBuilder.AddField("Version", "N/A", true);
                 discordEmbedBuilder.Color = DiscordColor.Red;
@@ -206,7 +215,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("add", "Adds you to an subscription for a server")]
         public static async Task AddAboAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "adding")] string serverNameChoice, [ChoiceProvider(typeof(AboTypeChoiceProvider))][Option("Type", "Type")] string aboTypeChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -214,8 +223,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             var aboStateChoiceProvider = new AboTypeChoiceProvider();
             var aboStateChoices = await aboStateChoiceProvider.Provider();
 
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
             bool isMinimal = "MINIMAL".ToLower() == aboStateChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == aboTypeChoice.ToLower()).Name.ToLower();
+
 
             DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverName, interactionContext, true, isMinimal);
 
@@ -229,7 +240,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("addall", "Adds you to every serversubscription", true)]
         public static async Task AddAllAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(AboTypeChoiceProvider))][Option("Type", "Type")] string aboTypeChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             var aboStateChoiceProvider = new AboTypeChoiceProvider();
             var aboStateChoices = await aboStateChoiceProvider.Provider();
@@ -238,7 +249,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             foreach (ServerInfo serverInfoObjItem in serverInfoList)
             {
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
                 DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoObjItem.Name, interactionContext, true, isMinimal);
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
             }
 
@@ -254,11 +268,13 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("del", "Delete´s you from an subscription for a server")]
         public static async Task DelAboAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "deleting")] string serverNameChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
 
             DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverName, interactionContext, false, false);
 
@@ -272,12 +288,14 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("delall", "Deletes you from every serversubscription", true)]
         public static async Task DelAllAsync(InteractionContext interactionContext)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             foreach (ServerInfo serverInfoObjItem in serverInfoList)
             {
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
                 DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoObjItem.Name, interactionContext, false, false);
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
                 await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
             }
 
@@ -301,7 +319,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             foreach (ServerInfo serverInfoObjItem in serverInfoList)
             {
                 serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                     break;
             }
 
@@ -335,9 +355,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             else if (abo && !isMinimal)
                 discordEmbedBuilder.Title = $"You will get notifications for {serverName}! | FULL";
             else if (!abo && isMinimal)
-                discordEmbedBuilder.Title = $"You will not get notified for {serverName} anymore! | MINIMAL";
+                discordEmbedBuilder.Title = $"You will not get notified for {serverName} anymore!";
             else if (!abo && !isMinimal)
-                discordEmbedBuilder.Title = $"You will not get notified for {serverName} anymore! | FULL";
+                discordEmbedBuilder.Title = $"You will not get notified for {serverName} anymore!";
 
             discordEmbedBuilder.WithDescription("Who?:" + "<@" + interactionContext.Member.Id.ToString() + ">\n" + "Where?:" + "<#" + interactionContext.Channel.Id.ToString() + ">");
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
@@ -387,7 +407,6 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(DateTime.Now);
 
-
             foreach (ServerStat serverStatObjItem in serverStatListLive)
             {
                 foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
@@ -418,7 +437,6 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 }
             }
 
-
             foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataListAboSorted)
             {
                 if (lastChannel == 0)
@@ -430,7 +448,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 if (dC_UserdataObjItem.MinimalAbo)
                     aboType = "MINIMAL";
 
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
                 if (!servers.Contains(serverInfoName))
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
                     servers += $"{aboType} - {serverInfoName}\n";
 
                 if (lastChannel != dC_UserdataObjItem.ChannelId)
@@ -455,7 +475,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         [SlashCommand("test", "Test´s the functionality of the DCChange [player, status, version]", true)]
         public static async Task TestAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "testserver")] string serverNameChoice, [ChoiceProvider(typeof(TestFunctionsChoiceProvider))][Option("Function", "function")] string testFunctionChoice)
         {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Loading..."));
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -463,6 +483,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             var testFunctionChoiceProvider = new TestFunctionsChoiceProvider();
             var testFunctionChoices = await testFunctionChoiceProvider.Provider();
 
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
@@ -479,6 +500,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             else if ("ONLINESTATE".ToLower() == testFunctionChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == testFunctionChoice.ToLower()).Name.ToLower())
                 DiscordBot.DCChange(serverStatObj, "status");
             else if ("VERSIONCHANGE".ToLower() == testFunctionChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == testFunctionChoice.ToLower()).Name.ToLower())
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 DiscordBot.DCChange(serverStatObj, "version");
 
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Finished!"));
@@ -513,7 +535,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task InviteAsync(InteractionContext interactionContext)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-            var botInvite = interactionContext.Client.GetInAppOAuth(Permissions.Administrator);
+            var botInvite = interactionContext.Client.GetInAppOAuth(Permissions.Administrator, OAuthScopes.BOT_MINIMAL);
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().WithContent(botInvite.AbsoluteUri));
         }
     }

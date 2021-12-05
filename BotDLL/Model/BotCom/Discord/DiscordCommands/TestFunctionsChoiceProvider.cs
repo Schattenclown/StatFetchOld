@@ -14,7 +14,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         /// Providers the choices.
         /// </summary>
         /// <returns>choices</returns>
+#pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         public async Task<IEnumerable<DiscordApplicationCommandOptionChoice>> Provider()
+#pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         {
             DiscordApplicationCommandOptionChoice[] choices = new DiscordApplicationCommandOptionChoice[3];
 

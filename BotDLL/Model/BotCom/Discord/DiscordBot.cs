@@ -1,32 +1,18 @@
-﻿using DisCatSharp;
+﻿using BotDLL.Model.Objects;
+using DisCatSharp;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.CommandsNext;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
-using DisCatSharp.EventArgs;
 using DisCatSharp.Interactivity;
 using DisCatSharp.Interactivity.Enums;
 using DisCatSharp.Interactivity.EventHandling;
 using DisCatSharp.Interactivity.Extensions;
-
 using Microsoft.Extensions.Logging;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-using BotDLL.Model.Objects;
-
+using static BotDLL.Model.BotCom.Discord.Events.ApplicationCommandsEvents;
 using static BotDLL.Model.BotCom.Discord.Events.ClientEvents;
 using static BotDLL.Model.BotCom.Discord.Events.GuildEvents;
-using static BotDLL.Model.BotCom.Discord.Events.ApplicationCommandsEvents;
 
 namespace BotDLL.Model.BotCom.Discord
 {
@@ -38,7 +24,9 @@ namespace BotDLL.Model.BotCom.Discord
     /// <typeparam name="TValue">Value</typeparam>
     public class MultiDict<TKey, TValue>
     {
+#pragma warning disable CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
         private readonly Dictionary<TKey, List<TValue>> _data = new Dictionary<TKey, List<TValue>>();
+#pragma warning restore CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
 
         /// <summary>
         /// Adds a <see cref="List{T}"/> to an <see cref="Dictionary{TKey, TValue}"/>
@@ -68,7 +56,9 @@ namespace BotDLL.Model.BotCom.Discord
         /// Gets a <see cref="Dictionary{TKey, TValue}"/>
         /// </summary>
         /// <returns>Dictionary</returns>
+#pragma warning disable CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
         public Dictionary<TKey, List<TValue>> Get()
+#pragma warning restore CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
         {
             return _data;
         }
@@ -90,6 +80,7 @@ namespace BotDLL.Model.BotCom.Discord
         /// <summary>
         /// Gets the client.
         /// </summary>
+#pragma warning disable CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
         public static DiscordClient Client { get; internal set; }
         /// <summary>
         /// Gets the application commands extension.
@@ -104,6 +95,7 @@ namespace BotDLL.Model.BotCom.Discord
         /// </summary>
         public static InteractivityExtension INext { get; internal set; }
         public static CancellationTokenSource ShutdownRequest;
+#pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
         public static readonly ulong testguild = 881868642600505354;
         public static string prefix = "sf/";
 
@@ -124,10 +116,12 @@ namespace BotDLL.Model.BotCom.Discord
             if (virgin == 0)
             {
                 Connections connections = Connections.GetConnections();
+#pragma warning disable CS8601 // Mögliche Nullverweiszuweisung.
                 token = connections.DiscordBotKey;
 #if DEBUG
                 token = connections.DiscordBotDebug;
 #endif
+#pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
                 virgin = 69;
             }
             ShutdownRequest = new CancellationTokenSource();
@@ -196,10 +190,12 @@ namespace BotDLL.Model.BotCom.Discord
         public void Dispose()
         {
             Client.Dispose();
+#pragma warning disable CS8625 // Ein NULL-Literal kann nicht in einen Non-Nullable-Verweistyp konvertiert werden.
             INext = null;
             CNext = null;
             Client = null;
             ApplicationCommands = null;
+#pragma warning restore CS8625 // Ein NULL-Literal kann nicht in einen Non-Nullable-Verweistyp konvertiert werden.
         }
 
         /// <summary>
@@ -212,15 +208,17 @@ namespace BotDLL.Model.BotCom.Discord
             await Client.ConnectAsync();
             Console.WriteLine($"Starting with Prefix {prefix}");
             Console.WriteLine($"Starting {Client.CurrentUser.Username}");
-            
-            /*while (!ShutdownRequest.IsCancellationRequested)
+
+            /*
+            while (!ShutdownRequest.IsCancellationRequested)
             {
                 await Task.Delay(2000);
             }
             await Client.UpdateStatusAsync(activity: null, userStatus: UserStatus.Offline, idleSince: null);
             await Client.DisconnectAsync();
             await Task.Delay(2500);
-            Dispose();*/
+            Dispose();
+            */
         }
 
 
@@ -285,7 +283,7 @@ namespace BotDLL.Model.BotCom.Discord
             var differentchannel = new List<ulong>();
             bool once = false;
 
-            DiscordEmbedBuilder discordEmbedBuilder = new DiscordEmbedBuilder
+            DiscordEmbedBuilder discordEmbedBuilder = new()
             {
                 Color = new DiscordColor(255, 0, 255)
             };
@@ -301,35 +299,30 @@ namespace BotDLL.Model.BotCom.Discord
                     {
                         if (whatchanged == "player")
                         {
-                            discordEmbedBuilder.WithAuthor($"StatFetch Player count changed!");
-                            //discordEmbedBuilder.AddField("Player count changed to ", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}");
-                            discordEmbedBuilder.Title = $"{serverStatObj.Name} {serverStatObj.Players}/{serverStatObj.MaxPlayers}";
-                            discordEmbedBuilder.Color = DiscordColor.Gold;
+                            discordEmbedBuilder.Title = $"Player count changed for {serverStatObj.Name}!";
+                            discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
                         }
                         else if (whatchanged == "status")
                         {
-                            discordEmbedBuilder.WithAuthor($"StatFetch Status changed!");
-                            string serverUp = "Offline";
-                            discordEmbedBuilder.Color = DiscordColor.Red;
                             if (serverStatObj.ServerUp)
                             {
-                                serverUp = "Online";
+                                discordEmbedBuilder.AddField("ServerUp", $"Online", true);
                                 discordEmbedBuilder.Color = DiscordColor.Green;
                             }
-                            discordEmbedBuilder.Title = $"{serverStatObj.Name} {serverUp}";
-                            //discordEmbedBuilder.AddField("Status changed to ", $"{serverUp}");
+                            else
+                            {
+                                discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
+                                discordEmbedBuilder.Color = DiscordColor.Red;
+                            }
+                            discordEmbedBuilder.Title = $"Status changed for {serverStatObj.Name}!";
                         }
                         else if (whatchanged == "version")
                         {
-                            discordEmbedBuilder.WithAuthor($"StatFetch Version changed!");
-                            //discordEmbedBuilder.AddField("Serverversion changed to ", $"{serverStatObj.Version}");
-                            discordEmbedBuilder.Title = $"{serverStatObj.Name} {serverStatObj.Version}";
-                            discordEmbedBuilder.Color = DiscordColor.Gray;
+                            discordEmbedBuilder.Title = $"Version changed for {serverStatObj.Name}!";
+                            discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
                         }
-                        discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}");
-                        discordEmbedBuilder.AddField("Game", serverStatObj.Game, false);
-                        discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}");
-                        
+                        discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
+
                         once = true;
                     }
                     if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataObjItem.ChannelId)))
@@ -337,30 +330,35 @@ namespace BotDLL.Model.BotCom.Discord
                 }
             }
 
-            string tags = "";
+            string mensions = "";
 
             foreach (ulong channelId in differentchannel)
             {
                 foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
                 {
-                    if (!tags.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId) && dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && !tags.Contains(dC_UserdataObjItem.AuthorId.ToString()))
-                        tags += "<@" + dC_UserdataObjItem.AuthorId + ">" + "\n";
-                    else if (!tags.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId) && dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 0 ||
-                             !tags.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId) && dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 1)
-                        tags += "<@" + dC_UserdataObjItem.AuthorId + ">" + "\n";
-                    else if (!tags.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId) && dC_UserdataObjItem.Abo && dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "version" ||
-                            !tags.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId) && dC_UserdataObjItem.Abo && dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "status")
-                        tags += "<@" + dC_UserdataObjItem.AuthorId + ">" + "\n";
+                    if(!mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId))
+                    {
+                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
+                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
+                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 0 ||
+                                 dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 1)
+                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
+                        else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "version" ||
+                                 dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "status")
+                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
+                    }
                 }
 
-                discordEmbedBuilder.WithDescription(tags);
+                if (discordEmbedBuilder.Fields.Count == 3)
+                    discordEmbedBuilder.RemoveFieldAt(2);
 
-                var chn = await Client.GetChannelAsync(channelId);
+                discordEmbedBuilder.AddField("mensions", mensions);
 
-                if (chn != null && tags != "")
-                    await chn.SendMessageAsync(discordEmbedBuilder.Build());
+                var channel = await Client.GetChannelAsync(channelId);
+                if (channel != null && mensions != "")
+                    await channel.SendMessageAsync(discordEmbedBuilder.Build());
 
-                tags = "";
+                mensions = "";
             }
         }
     }

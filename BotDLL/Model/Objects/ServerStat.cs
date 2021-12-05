@@ -23,10 +23,12 @@ namespace BotDLL.Model.Objects
         public static ServerStat CreateObj(ServerInfo serverInfoObj)
         {
             ServerStat serverStatObj = new();
+#pragma warning disable CS8604 // Mögliches Nullverweisargument.
             IPAddress ip4address = Dns.GetHostAddresses(serverInfoObj.DynDnsAddress)[0];
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
             if (serverInfoObj.Game == Objects.Game.Minecraft)
             {
-                MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 1);
+                MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 10);
                 serverStatObj = new()
                 {
                     Id = serverInfoObj.Id,
@@ -55,7 +57,7 @@ namespace BotDLL.Model.Objects
                 queryConnection.Connect();
                 try
                 {
-                    InfoResponse infoResonceObj = queryConnection.GetInfo(maxRetries: 1);
+                    InfoResponse infoResonceObj = queryConnection.GetInfo(maxRetries: 10);
                     serverStatObj = new()
                     {
                         Id = serverInfoObj.Id,
