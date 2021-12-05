@@ -16,7 +16,7 @@ namespace StatFetch
             #region ConsoleSize
             try
             {
-                Console.SetWindowSize(207, 49);
+                Console.SetWindowSize(210, 49);
             }
             catch (Exception)
             {
