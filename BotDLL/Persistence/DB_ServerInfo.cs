@@ -43,10 +43,10 @@ namespace BotDLL.Persistence
 
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
             string database = WordCutter.RemoveUntilWord(connections.MySqlConStr, "Database=", 9);
-#pragma warning restore CS8604 // Mögliches Nullverweisargument.
 #if DEBUG
             database = WordCutter.RemoveUntilWord(connections.MySqlConStrDebug, "Database=", 9);
 #endif
+#pragma warning restore CS8604 // Mögliches Nullverweisargument.
             database = WordCutter.RemoveAfterWord(database, "; Uid", 0);
 
             string sqlCommand = $"CREATE DATABASE IF NOT EXISTS `{database}`;" +

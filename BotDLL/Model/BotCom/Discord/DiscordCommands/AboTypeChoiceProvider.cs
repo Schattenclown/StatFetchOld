@@ -20,8 +20,8 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         {
             DiscordApplicationCommandOptionChoice[] choices = new DiscordApplicationCommandOptionChoice[2];
 
-            choices[0] = new DiscordApplicationCommandOptionChoice("FULL", "0");
-            choices[1] = new DiscordApplicationCommandOptionChoice("MINIMAL", "1");
+            choices[0] = new DiscordApplicationCommandOptionChoice("MINIMAL", "0");
+            choices[1] = new DiscordApplicationCommandOptionChoice("FULL", "2");
 
             return choices;
         }

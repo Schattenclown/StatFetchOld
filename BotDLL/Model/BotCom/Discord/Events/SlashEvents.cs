@@ -1,11 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using DisCatSharp;
-using DisCatSharp.EventArgs;
+﻿using DisCatSharp;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
-
+using DisCatSharp.EventArgs;
 using Microsoft.Extensions.Logging;
 
 namespace BotDLL.Model.BotCom.Discord.Events

@@ -1,13 +1,6 @@
 ﻿using DisCatSharp;
 using DisCatSharp.CommandsNext;
-using DisCatSharp.Entities;
 using DisCatSharp.EventArgs;
-
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace BotDLL.Model.BotCom.Discord.Events
 {

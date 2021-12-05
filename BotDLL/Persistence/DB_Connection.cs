@@ -106,9 +106,9 @@ namespace BotDLL.Persistence
                 filePath = WordCutter.RemoveAfterWord(filePath, "Release", 0);
                 newFilepath = filePath + "Release\\ListforgeBot.exe";
             }
-            Console.WriteLine("Before 120 secound sleep");
+            Console.WriteLine("Before 120 second sleep");
             Thread.Sleep(1000 * 60);
-            Console.WriteLine("After 120 secound sleep");
+            Console.WriteLine("After 120 second sleep");
             // Start program
             Process.Start(newFilepath);
 

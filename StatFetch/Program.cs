@@ -50,17 +50,20 @@ namespace StatFetch
                     consoleString += serverStatObj + "\n";
                 }
                 consoleString += "".PadLeft(207, '█') + "\n";
-                Console.Write(consoleString);
 
                 if (counter % 2 == 0)
                 {
                     serverStatListCompare0.Clear();
                     serverStatListCompare0.AddRange(serverStatListLive);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(consoleString);
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
                 else
                 {
                     serverStatListCompare1.Clear();
                     serverStatListCompare1.AddRange(serverStatListLive);
+                    Console.Write(consoleString);
                 }
 
                 foreach (ServerStat serverStatObjCompare0 in serverStatListCompare0)
@@ -114,7 +117,7 @@ namespace StatFetch
                 }
 
                 counter++;
-                await Task.Delay(2000);
+                await Task.Delay(1000);
             }
         }
     }

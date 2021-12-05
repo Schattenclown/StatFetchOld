@@ -70,8 +70,6 @@ namespace BotDLL.Model.BotCom.Discord
     /// </summary>
     public class DiscordBot : IDisposable
     {
-        /*private static List<LF_ServerInfo> lstlive = new List<LF_ServerInfo>();
-        static List<DC_Userdata> lstud = new List<DC_Userdata>();*/
         /// <summary>
         /// The db.
         /// </summary>
@@ -352,7 +350,7 @@ namespace BotDLL.Model.BotCom.Discord
                 if (discordEmbedBuilder.Fields.Count == 3)
                     discordEmbedBuilder.RemoveFieldAt(2);
 
-                discordEmbedBuilder.AddField("mensions", mensions);
+                discordEmbedBuilder.AddField("Mensions", mensions);
 
                 var channel = await Client.GetChannelAsync(channelId);
                 if (channel != null && mensions != "")

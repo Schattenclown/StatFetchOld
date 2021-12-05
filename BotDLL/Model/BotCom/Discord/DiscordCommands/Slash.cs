@@ -178,10 +178,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                     break;
             }
 
-            DiscordEmbedBuilder discordEmbedBuilder = new()
-            {
-                Title = "Status"
-            };
+            DiscordEmbedBuilder discordEmbedBuilder = new();
             discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
             discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
             discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
@@ -398,7 +395,6 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             DiscordEmbedBuilder discordEmbedBuilder = new()
             {
-                Title = "/abo",
                 Color = new DiscordColor(255, 0, 255)
             };
             discordEmbedBuilder.WithDescription(interactionContext.Member.Mention);
@@ -424,7 +420,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             }
 
             if (sub2nothing)
-                discordEmbedBuilder.AddField("You are unsubscribed to everything", ":(");
+                discordEmbedBuilder.AddField("You are unsubscribed from everything", ":(");
             else
             {
                 foreach (ulong diffchn in differentchannel)
@@ -504,27 +500,6 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 DiscordBot.DCChange(serverStatObj, "version");
 
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Finished!"));
-        }
-
-        /// <summary>
-        /// Gets the user's avatar & banner.
-        /// </summary>
-        /// <param name="contentMenuContext">The contextmenu context.</param>
-        [ContextMenu(ApplicationCommandType.User, "Get avatar & banner")]
-        public static async Task GetUserBannerAsync(ContextMenuContext contentMenuContext)
-        {
-            var user = await contentMenuContext.Client.GetUserAsync(contentMenuContext.TargetUser.Id, true);
-
-            var discordEmbedBuilder = new DiscordEmbedBuilder
-            {
-                Title = $"Avatar & Banner of {user.Username}",
-                ImageUrl = user.BannerHash != null ? user.BannerUrl : null
-            }.
-            WithThumbnail(user.AvatarUrl).
-            WithColor(user.BannerColor ?? DiscordColor.Aquamarine).
-            WithFooter($"Requested by {contentMenuContext.Member.DisplayName}", contentMenuContext.Member.AvatarUrl).
-            WithAuthor($"{user.Username}", user.AvatarUrl, user.AvatarUrl);
-            await contentMenuContext.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(discordEmbedBuilder.Build()));
         }
 
         /// <summary>
