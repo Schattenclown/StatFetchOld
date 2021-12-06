@@ -99,16 +99,15 @@ namespace BotDLL.Persistence
             if (filePath.Contains("Debug"))
             {
                 filePath = WordCutter.RemoveAfterWord(filePath, "Debug", 0);
-                newFilepath = filePath + "Debug\\ListforgeBot.exe";
+                newFilepath = filePath + "Debug\\net6.0\\StatFetch.exe";
             }
             else if (filePath.Contains("Release"))
             {
                 filePath = WordCutter.RemoveAfterWord(filePath, "Release", 0);
-                newFilepath = filePath + "Release\\ListforgeBot.exe";
+                newFilepath = filePath + "Release\\net6.0\\StatFetch.exe";
             }
-            Console.WriteLine("Before 120 second sleep");
+            Console.WriteLine("Sleeping for 2 minutes!");
             Thread.Sleep(1000 * 60);
-            Console.WriteLine("After 120 second sleep");
             // Start program
             Process.Start(newFilepath);
 
