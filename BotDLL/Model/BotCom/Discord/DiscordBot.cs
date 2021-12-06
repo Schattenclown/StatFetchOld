@@ -349,8 +349,8 @@ namespace BotDLL.Model.BotCom.Discord
 
                 if (discordEmbedBuilder.Fields.Count == 3)
                     discordEmbedBuilder.RemoveFieldAt(2);
-
-                discordEmbedBuilder.AddField("Mensions", mensions);
+                if (mensions != "" && mensions != " ")
+                    discordEmbedBuilder.AddField("Mensions", mensions);
 
                 var channel = await Client.GetChannelAsync(channelId);
                 if (channel != null && mensions != "")
