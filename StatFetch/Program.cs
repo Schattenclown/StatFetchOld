@@ -27,7 +27,7 @@ namespace StatFetch
             #endregion
 
             ServerInfo.CreateTable_ServerInfo();
-            DC_Userdata.CreateTable_Userdata();
+            DCUserdata.CreateTable_Userdata();
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
 
             discordBot = new DiscordBot();

@@ -4,18 +4,18 @@ using MySql.Data.MySqlClient;
 
 namespace BotDLL.Persistence
 {
-    public class DB_DC_Userdata
+    public class DB_DCUserdata
     {
-        public static List<DC_Userdata> ReadAll()
+        public static List<DCUserdata> ReadAll()
         {
             string sqlCommand = "SELECT * FROM DC_Userdata";
-            List<DC_Userdata> dC_UserdataList = new();
+            List<DCUserdata> dC_UserdataList = new();
             MySqlConnection mySqlConnection = DB_Connection.OpenDB();
             MySqlDataReader mySqlDataReader = DB_Connection.ExecuteReader(sqlCommand, mySqlConnection);
             
             while (mySqlDataReader.Read())
             {
-                DC_Userdata dC_UserdataObj = new()
+                DCUserdata dC_UserdataObj = new()
                 {
                     Id = mySqlDataReader.GetUInt16("Id"),
                     AuthorId = mySqlDataReader.GetUInt64("AuthorId"),
@@ -30,13 +30,13 @@ namespace BotDLL.Persistence
             DB_Connection.CloseDB(mySqlConnection);
             return dC_UserdataList;
         }
-        public static void Add(DC_Userdata dC_UserdataObj)
+        public static void Add(DCUserdata dC_UserdataObj)
         {
             string sqlCommand = $"INSERT INTO DC_Userdata (AuthorId, ChannelId, ServerInfoId, Abo, MinimalAbo) " +
                                 $"VALUES ({dC_UserdataObj.AuthorId}, {dC_UserdataObj.ChannelId}, {dC_UserdataObj.ServerInfoId}, {dC_UserdataObj.Abo}, {dC_UserdataObj.MinimalAbo})";
             DB_Connection.ExecuteNonQuery(sqlCommand);
         }
-        public static void Change(DC_Userdata dC_UserdataObj)
+        public static void Change(DCUserdata dC_UserdataObj)
         {
             string sqlCommand = $"UPDATE DC_Userdata SET Abo={dC_UserdataObj.Abo}, MinimalAbo={dC_UserdataObj.MinimalAbo} WHERE AuthorId={dC_UserdataObj.AuthorId} AND ChannelId={dC_UserdataObj.ChannelId} AND ServerInfoId={dC_UserdataObj.ServerInfoId}";
             DB_Connection.ExecuteNonQuery(sqlCommand);

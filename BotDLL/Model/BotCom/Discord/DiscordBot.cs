@@ -276,7 +276,7 @@ namespace BotDLL.Model.BotCom.Discord
 
         public static async void DCChange(ServerStat serverStatObj, string whatchanged, bool isminimal)
         {
-            List<DC_Userdata> dC_UserdataList = DC_Userdata.ReadAll();
+            List<DCUserdata> dC_UserdataList = DCUserdata.ReadAll();
 
             var differentchannel = new List<ulong>();
             bool once = false;
@@ -289,7 +289,7 @@ namespace BotDLL.Model.BotCom.Discord
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
 
-            foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
+            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
             {
                 if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
                 {
@@ -332,7 +332,7 @@ namespace BotDLL.Model.BotCom.Discord
 
             foreach (ulong channelId in differentchannel)
             {
-                foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
+                foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
                 {
                     if(!mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId))
                     {

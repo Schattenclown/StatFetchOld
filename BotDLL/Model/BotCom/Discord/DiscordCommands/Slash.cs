@@ -309,7 +309,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static DiscordEmbedBuilder ChangeSubscriptionCommand(string serverName, InteractionContext interactionContext, bool abo, bool isMinimal)
         {
             bool found = false;
-            List<DC_Userdata> dC_UserdataList = DB_DC_Userdata.ReadAll();
+            List<DCUserdata> dC_UserdataList = DB_DCUserdata.ReadAll();
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
@@ -322,7 +322,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                     break;
             }
 
-            DC_Userdata dC_UserdataObj = new()
+            DCUserdata dC_UserdataObj = new()
             {
                 AuthorId = interactionContext.Member.Id,
                 ChannelId = interactionContext.Channel.Id,
@@ -331,16 +331,16 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 MinimalAbo = isMinimal
             };
 
-            foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
+            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
             {
                 if (dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
                     found = true;
             }
 
             if (found)
-                DC_Userdata.Change(dC_UserdataObj);
+                DCUserdata.Change(dC_UserdataObj);
             else
-                DC_Userdata.Add(dC_UserdataObj);
+                DCUserdata.Add(dC_UserdataObj);
 
             DiscordEmbedBuilder discordEmbedBuilder = new()
             {
@@ -376,9 +376,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
-            List<DC_Userdata> dC_UserdataList = DB_DC_Userdata.ReadAll();
-            List<DC_Userdata> dC_UserdataListAbo = new();
-            List<DC_Userdata> dC_UserdataListAboSorted = new();
+            List<DCUserdata> dC_UserdataList = DB_DCUserdata.ReadAll();
+            List<DCUserdata> dC_UserdataListAbo = new();
+            List<DCUserdata> dC_UserdataListAboSorted = new();
 
             bool sub2nothing = true;
             var differentchannel = new List<ulong>();
@@ -405,7 +405,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             foreach (ServerStat serverStatObjItem in serverStatListLive)
             {
-                foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataList)
+                foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
                 {
                     if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObjItem.Id && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
                     {
@@ -425,7 +425,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 foreach (ulong diffchn in differentchannel)
                 {
-                    foreach (DC_Userdata dC_UserdatatObjItem in dC_UserdataListAbo)
+                    foreach (DCUserdata dC_UserdatatObjItem in dC_UserdataListAbo)
                     {
                         if (!dC_UserdataListAboSorted.Contains(dC_UserdatatObjItem) && dC_UserdatatObjItem.ChannelId == diffchn)
                             dC_UserdataListAboSorted.Add(dC_UserdatatObjItem);
@@ -433,7 +433,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 }
             }
 
-            foreach (DC_Userdata dC_UserdataObjItem in dC_UserdataListAboSorted)
+            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataListAboSorted)
             {
                 if (lastChannel == 0)
                     lastChannel = dC_UserdataObjItem.ChannelId;
