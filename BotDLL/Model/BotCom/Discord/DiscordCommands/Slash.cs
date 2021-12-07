@@ -492,12 +492,12 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             }
 
             if ("PLAYERCOUNT".ToLower() == testFunctionChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == testFunctionChoice.ToLower()).Name.ToLower())
-                DiscordBot.DCChange(serverStatObj, "player");
+                DiscordBot.DCChange(serverStatObj, "player", false);
             else if ("ONLINESTATE".ToLower() == testFunctionChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == testFunctionChoice.ToLower()).Name.ToLower())
-                DiscordBot.DCChange(serverStatObj, "status");
+                DiscordBot.DCChange(serverStatObj, "status", false);
             else if ("VERSIONCHANGE".ToLower() == testFunctionChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == testFunctionChoice.ToLower()).Name.ToLower())
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
-                DiscordBot.DCChange(serverStatObj, "version");
+                DiscordBot.DCChange(serverStatObj, "version", false);
 
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Finished!"));
         }

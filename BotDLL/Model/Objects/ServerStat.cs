@@ -22,17 +22,18 @@ namespace BotDLL.Model.Objects
         public DateTime FetchTime { get; set; }
         public static ServerStat CreateObj(ServerInfo serverInfoObj)
         {
-            bool firsttry = true;
-            bool secondtry = true;
+            bool b = true;
+            int i = 1;
             ServerStat serverStatObj = new();
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
             IPAddress ip4address = Dns.GetHostAddresses(serverInfoObj.DynDnsAddress)[0];
 #pragma warning restore CS8604 // Mögliches Nullverweisargument.
-            while ((firsttry || secondtry) && (!serverStatObj.ServerUp || serverStatObj.ServerUp == null))
+
+            do
             {
                 if (serverInfoObj.Game == Objects.Game.Minecraft)
                 {
-                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 10);
+                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port);
                     serverStatObj = new()
                     {
                         Id = serverInfoObj.Id,
@@ -58,10 +59,10 @@ namespace BotDLL.Model.Objects
                         Port = serverInfoObj.Port
                     };
 
-                    queryConnection.Connect();
                     try
                     {
-                        InfoResponse infoResonceObj = queryConnection.GetInfo(maxRetries: 10);
+                        queryConnection.Connect();
+                        InfoResponse infoResonceObj = queryConnection.GetInfo();
                         serverStatObj = new()
                         {
                             Id = serverInfoObj.Id,
@@ -98,11 +99,15 @@ namespace BotDLL.Model.Objects
                         };
                     }
                 }
-                if (firsttry)
-                    firsttry = false;
-                if(!firsttry && secondtry)
-                    secondtry = false;
-            }
+                
+                if (serverStatObj.ServerUp)
+                    b = false;
+
+                if (i % 5 == 0)
+                    b = false;
+                i++;
+
+            } while (b);
 
             return serverStatObj;
         }

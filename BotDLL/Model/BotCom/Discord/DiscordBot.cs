@@ -274,7 +274,7 @@ namespace BotDLL.Model.BotCom.Discord
         }
         #endregion
 
-        public static async void DCChange(ServerStat serverStatObj, string whatchanged)
+        public static async void DCChange(ServerStat serverStatObj, string whatchanged, bool isminimal)
         {
             List<DC_Userdata> dC_UserdataList = DC_Userdata.ReadAll();
 
@@ -338,8 +338,7 @@ namespace BotDLL.Model.BotCom.Discord
                     {
                         if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 0 ||
-                                 dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && serverStatObj.Players == 1)
+                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && isminimal)
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
                         else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "version" ||
                                  dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "status")

@@ -97,19 +97,23 @@ namespace StatFetch
                                 Console.Write(consoleString);
                                 Console.ForegroundColor = ConsoleColor.Gray;
 
+                                bool isminimal = false;
+                                if (serverStatObjCompare0.Players == 1 && serverStatObjCompare1.Players == 0 || serverStatObjCompare0.Players == 0 && serverStatObjCompare1.Players == 1)
+                                    isminimal = true;
+
                                 if(serverStatObjCompare0.ServerUp != serverStatObjCompare1.ServerUp)
                                 {
                                     if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
-                                        DiscordBot.DCChange(serverStatObjCompare0, "status");
+                                        DiscordBot.DCChange(serverStatObjCompare0, "status", isminimal);
                                     else
-                                        DiscordBot.DCChange(serverStatObjCompare1, "status");
+                                        DiscordBot.DCChange(serverStatObjCompare1, "status", isminimal);
                                 }
                                 else if (serverStatObjCompare0.Players != serverStatObjCompare1.Players)
                                 {
                                     if (serverStatObjCompare0.FetchTime > serverStatObjCompare1.FetchTime)
-                                        DiscordBot.DCChange(serverStatObjCompare0, "player");
+                                        DiscordBot.DCChange(serverStatObjCompare0, "player", isminimal);
                                     else
-                                        DiscordBot.DCChange(serverStatObjCompare1, "player");
+                                        DiscordBot.DCChange(serverStatObjCompare1, "player", isminimal);
                                 }
                             }
                         }
