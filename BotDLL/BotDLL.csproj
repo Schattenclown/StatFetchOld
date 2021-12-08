@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\QuickCharts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DisCatSharp" Version="9.8.4" />
     <PackageReference Include="DisCatSharp.ApplicationCommands" Version="9.8.4" />
     <PackageReference Include="DisCatSharp.CommandsNext" Version="9.8.4" />

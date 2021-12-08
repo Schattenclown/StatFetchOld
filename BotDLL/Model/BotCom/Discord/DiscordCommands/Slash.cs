@@ -4,6 +4,7 @@ using DisCatSharp;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
+using BotDLL.Model.QuickCharts;
 
 namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 {
@@ -178,6 +179,67 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             }
 
             DiscordEmbedBuilder discordEmbedBuilder = new();
+            discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
+            discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
+            discordEmbedBuilder.AddField("UpTime", serverStatObj.UpTimeInPercent + "%", true);
+            discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
+            discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
+            discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
+
+            if (serverStatObj.ServerUp == true)
+            {
+                discordEmbedBuilder.AddField("ServerUp", $"Online", true);
+                discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
+                discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
+                discordEmbedBuilder.Color = DiscordColor.Green;
+            }
+            else
+            {
+                discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
+                discordEmbedBuilder.AddField("Players", "N/A", true);
+                discordEmbedBuilder.AddField("Version", "N/A", true);
+                discordEmbedBuilder.Color = DiscordColor.Red;
+            }
+
+            await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
+        }
+
+        /// <summary>
+        /// Show´s the playerstatistics from a singel server
+        /// </summary>
+        /// <param name="interactionContext">The ctx.</param>
+        /// <param name="serverNameChoice">The servers.</param>
+        [SlashCommand("statistics", "Show´s the playerstatistics from a singel server")]
+        public static async Task StatisticsAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "statistics")] string serverNameChoice)
+        {
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+
+            var serverNameChoiceProvider = new ServerNameChoiceProvider();
+            var serverNameChoices = await serverNameChoiceProvider.Provider();
+#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
+            string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
+
+            List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
+
+            ServerStat serverStatObj = new();
+            ServerInfo serverInfoObj = new();
+            foreach (ServerInfo serverInfoItem in serverInfoList)
+            {
+                if (serverInfoItem.Name.ToLower() == serverName.ToLower())
+                {
+                    serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                    serverInfoObj = serverInfoItem;
+                    break;
+                }
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
+            }
+
+            DiscordEmbedBuilder discordEmbedBuilder = new();
+
+            serverInfoObj.QCUri = new Uri(QCUriGenerator.CreateObj(serverInfoObj).QCUri.AbsoluteUri);
+
+            discordEmbedBuilder.ImageUrl = serverInfoObj.QCUri.AbsoluteUri;
+
             discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
             discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
             discordEmbedBuilder.AddField("UpTime", serverStatObj.UpTimeInPercent + "%", true);

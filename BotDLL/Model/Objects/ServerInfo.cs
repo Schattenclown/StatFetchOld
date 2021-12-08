@@ -17,6 +17,7 @@ namespace BotDLL.Model.Objects
         public Game Game { get; set; }
         public double UpTimeInPercent { get; set; }
         public List<MonthStatistics> MonthStatisticsList { get; set; }
+        public Uri QCUri { get; set; }
         public ServerInfo()
         {
 
@@ -27,7 +28,7 @@ namespace BotDLL.Model.Objects
         }
         public static void Update(ServerInfo serverInfoObj)
         {
-            DB_ServerInfo.Change(serverInfoObj);
+            DB_ServerInfo.ChangeUpTime(serverInfoObj);
         }
         public static void CreateTable()
         {

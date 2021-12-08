@@ -1,6 +1,7 @@
 ﻿using BotDLL.Model.BotCom.Discord;
 using BotDLL.Model.HelpClasses;
 using BotDLL.Model.Objects;
+using BotDLL.Model.QuickCharts;
 
 namespace StatFetch
 {
@@ -35,6 +36,10 @@ namespace StatFetch
             MonthStatistics.CreateTables(serverInfoList);
             Task upTimeCheckTask = UpTimeCheck();
             Task maxPlayerCheck = MaxPlayerCheck();
+
+            ServerInfo serverInfoTest = serverInfoList.FirstOrDefault();
+            
+            QCUriGenerator.CreateObj(serverInfoTest);
 
             discordBot = new DiscordBot();
             await discordBot.RunAsync();
@@ -143,7 +148,7 @@ namespace StatFetch
                 {
                     while (DateTime.Now.Second != 59)
                     {
-                        await Task.Delay(1000);
+                        await Task.Delay(500);
                     }
 
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -222,6 +227,7 @@ namespace StatFetch
                             }
                         }
                     }
+                    await Task.Delay(1000);
                 }
             });
         }
@@ -236,7 +242,7 @@ namespace StatFetch
                 {
                     while (DateTime.Now.Second != 29)
                     {
-                        await Task.Delay(1000);
+                        await Task.Delay(500);
                     }
 
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -270,6 +276,7 @@ namespace StatFetch
                             MonthStatistics.Add(serverStatObj);
                         }
                     }
+                    await Task.Delay(1000);
                 }
             });
         }

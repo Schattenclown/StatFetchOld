@@ -34,9 +34,14 @@ namespace BotDLL.Persistence
             DB_Connection.CloseDB(mySqlConnection);
             return serverInfosList;
         }
-        public static void Change(ServerInfo serverInfoObj)
+        public static void ChangeUpTime(ServerInfo serverInfoObj)
         {
             string sqlCommand = $"UPDATE ServerInfo SET UpTimeInPercent={serverInfoObj.UpTimeInPercent.ToString().Replace(',', '.')} WHERE ServerInfoId={serverInfoObj.ServerInfoId}";
+            DB_Connection.ExecuteNonQuery(sqlCommand);
+        }
+        public static void ChangeQCUri(ServerInfo serverInfoObj)
+        {
+            string sqlCommand = $"UPDATE ServerInfo SET QCUri={serverInfoObj.QCUri} WHERE ServerInfoId={serverInfoObj.ServerInfoId}";
             DB_Connection.ExecuteNonQuery(sqlCommand);
         }
         public static void CreateTable()
@@ -62,6 +67,7 @@ namespace BotDLL.Persistence
                             "`Port` MEDIUMINT DEFAULT NULL," +
                             "`Game` varchar(69) DEFAULT 'SourceGame'," +
                             "`UpTimeInPercent` DOUBLE DEFAULT 100," +
+                            "`QCUri` varchar(420) DEFAULT NULL," +
                             "PRIMARY KEY (ServerInfoId)" +
                             ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 

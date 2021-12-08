@@ -19,6 +19,10 @@ namespace BotDLL.Model.Objects
         {
             return DB_MonthStatistics.ReadAll(serverInfoList);
         }
+        public static ServerInfo Read(ServerInfo serverInfoObj)
+        {
+            return DB_MonthStatistics.Read(serverInfoObj);
+        }
         public static void Add(ServerStat serverStatObj)
         {
             DB_MonthStatistics.Add(serverStatObj);

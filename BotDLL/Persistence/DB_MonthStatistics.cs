@@ -45,6 +45,31 @@ namespace BotDLL.Persistence
             }
             return serverInfoListWithMS;
         }
+        public static ServerInfo Read(ServerInfo serverInfoObj)
+        {
+            string serverInfoIdString = $"{serverInfoObj.ServerInfoId:#0000000}MonthStatistics";
+            string sqlCommand = $"SELECT * FROM {serverInfoIdString}";
+
+            MySqlConnection mySqlConnection = DB_Connection.OpenDB();
+            MySqlDataReader mySqlDataReader = DB_Connection.ExecuteReader(sqlCommand, mySqlConnection);
+            List<MonthStatistics> monthStatisticsList = new();
+
+            while (mySqlDataReader.Read())
+            {
+                MonthStatistics monthStatisticsObj = new()
+                {
+                    Date = mySqlDataReader.GetDateTime("Date"),
+                    MaxPlayers = mySqlDataReader.GetUInt16("MaxPlayers")
+                };
+                monthStatisticsList.Add(monthStatisticsObj);
+            }
+
+            serverInfoObj.MonthStatisticsList = monthStatisticsList;
+
+            DB_Connection.CloseDB(mySqlConnection);
+
+            return serverInfoObj;
+        }
         public static void Add(ServerStat serverStatObj)
         {
             string serverInfoIdString = $"{serverStatObj.ServerInfoId:#0000000}MonthStatistics";
