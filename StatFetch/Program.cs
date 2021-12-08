@@ -32,7 +32,9 @@ namespace StatFetch
             UpTime.CreateTable();
             DCUserdata.CreateTable();
             serverInfoList = ServerInfo.ReadAll();
+            MonthStatistics.CreateTables(serverInfoList);
             Task upTimeCheckTask = UpTimeCheck();
+            Task maxPlayerCheck = MaxPlayerCheck();
 
             discordBot = new DiscordBot();
             await discordBot.RunAsync();
@@ -218,6 +220,56 @@ namespace StatFetch
                                 serverInfoObjItem.UpTimeInPercent = serverStatObjItem.UpTimeInPercent;
                                 ServerInfo.Update(serverInfoObjItem);
                             }
+                        }
+                    }
+                }
+            });
+        }
+        public static async Task MaxPlayerCheck()
+        {
+            List<ServerInfo> serverInfoListMaxPlayer = new();
+            List<ServerInfo> serverInfoListWithMS = new();
+            List<ServerStat> serverStatListMaxPlayer = new();
+
+
+            await Task.Run(async () =>
+            {
+                while (true)
+                {
+                    while (DateTime.Now.Second != 29)
+                    {
+                        await Task.Delay(200);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    ConsoleForamter.FillRow();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    ConsoleForamter.FillRow();
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                    serverInfoListMaxPlayer = ServerInfo.ReadAll();
+                    serverInfoListWithMS = MonthStatistics.ReadAll(serverInfoList);
+
+                    foreach (ServerInfo serverInfoItem in serverInfoListWithMS)
+                    {
+                        bool todayFound = false;
+                        
+                        foreach (MonthStatistics monthStatisticsItem in serverInfoItem.MonthStatisticsList)
+                        {
+                            if(monthStatisticsItem.Date.Date == DateTime.Now.Date)
+                            {
+                                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                                if(serverStatObj.Players > monthStatisticsItem.MaxPlayers)
+                                    MonthStatistics.Change(serverStatObj);
+
+                                todayFound = true;
+                            }
+                        }
+
+                        if(!todayFound)
+                        {
+                            ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                            MonthStatistics.Add(serverStatObj);
                         }
                     }
                 }

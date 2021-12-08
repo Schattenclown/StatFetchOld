@@ -34,7 +34,7 @@ namespace BotDLL.Model.Objects
             {
                 if (serverInfoObj.Game == Objects.Game.Minecraft)
                 {
-                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 50);
+                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 200);
                     serverStatObj = new()
                     {
                         ServerInfoId = serverInfoObj.ServerInfoId,
@@ -63,7 +63,7 @@ namespace BotDLL.Model.Objects
 
                     try
                     {
-                        queryConnection.Connect(50);
+                        queryConnection.Connect(200);
                         InfoResponse infoResonceObj = queryConnection.GetInfo();
                         serverStatObj = new()
                         {

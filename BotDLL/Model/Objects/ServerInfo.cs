@@ -16,6 +16,7 @@ namespace BotDLL.Model.Objects
         public ushort Port { get; set; }
         public Game Game { get; set; }
         public double UpTimeInPercent { get; set; }
+        public List<MonthStatistics> MonthStatisticsList { get; set; }
         public ServerInfo()
         {
 
