@@ -21,7 +21,7 @@ namespace BotDLL.Persistence
                     Name = mySqlDataReader.GetString("Name"),
                     DynDnsAddress = mySqlDataReader.GetString("DynDnsAddress"),
                     Port = mySqlDataReader.GetUInt16("Port"),
-                    UpTimeInPercent = mySqlDataReader.GetUInt16("UpTimeInPercent")
+                    UpTimeInPercent = mySqlDataReader.GetDouble("UpTimeInPercent")
                 };
                 if (mySqlDataReader.GetString("Game") == "Minecraft")
                     serverInfoObj.Game = Game.Minecraft;
@@ -59,7 +59,7 @@ namespace BotDLL.Persistence
                             "`ServerInfoId` MEDIUMINT NOT NULL AUTO_INCREMENT," +
                             "`Name` varchar(69) DEFAULT NULL," +
                             "`DynDnsAddress` varchar(69) DEFAULT NULL," +
-                            "`Port` int DEFAULT NULL," +
+                            "`Port` MEDIUMINT DEFAULT NULL," +
                             "`Game` varchar(69) DEFAULT 'SourceGame'," +
                             "`UpTimeInPercent` DOUBLE DEFAULT 100," +
                             "PRIMARY KEY (ServerInfoId)" +

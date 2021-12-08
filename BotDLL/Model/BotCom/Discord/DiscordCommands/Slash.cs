@@ -324,11 +324,11 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             DCUserdata dC_UserdataObj = new()
             {
+                ServerInfoId = serverStatObj.ServerInfoId,
                 AuthorId = interactionContext.Member.Id,
                 ChannelId = interactionContext.Channel.Id,
-                ServerInfoId = serverStatObj.ServerInfoId,
                 Abo = abo,
-                MinimalAbo = isMinimal
+                IsMinimalAbo = isMinimal
             };
 
             foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
@@ -441,7 +441,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 string serverInfoName = serverInfoList.First(firstMatch => firstMatch.ServerInfoId == dC_UserdataObjItem.ServerInfoId).Name;
 
                 string aboType = "FULL";
-                if (dC_UserdataObjItem.MinimalAbo)
+                if (dC_UserdataObjItem.IsMinimalAbo)
                     aboType = "MINIMAL";
 
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.

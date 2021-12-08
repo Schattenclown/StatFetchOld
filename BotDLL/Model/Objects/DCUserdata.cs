@@ -5,11 +5,15 @@ namespace BotDLL.Model.Objects
     public class DCUserdata
     {
         public ushort DCUserdataID { get; set; }
+        public ushort ServerInfoId { get; set; }
         public ulong AuthorId { get; set; }
         public ulong ChannelId { get; set; }
-        public ushort ServerInfoId { get; set; }
         public bool Abo { get; set; }
-        public bool MinimalAbo { get; set; }
+        public bool IsMinimalAbo { get; set; }
+        public DCUserdata()
+        {
+
+        }
         public static List<DCUserdata> ReadAll()
         {
             return DB_DCUserdata.ReadAll();

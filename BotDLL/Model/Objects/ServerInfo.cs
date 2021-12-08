@@ -16,6 +16,10 @@ namespace BotDLL.Model.Objects
         public ushort Port { get; set; }
         public Game Game { get; set; }
         public double UpTimeInPercent { get; set; }
+        public ServerInfo()
+        {
+
+        }
         public static List<ServerInfo> ReadAll()
         {
             return DB_ServerInfo.ReadAll();

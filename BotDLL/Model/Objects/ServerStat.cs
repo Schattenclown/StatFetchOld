@@ -23,8 +23,8 @@ namespace BotDLL.Model.Objects
         public double UpTimeInPercent { get; set; }
         public static ServerStat CreateObj(ServerInfo serverInfoObj)
         {
-            bool b = true;
-            int i = 1;
+            bool falsePositive = true;
+            int falsePositiveInt = 1;
             ServerStat serverStatObj = new();
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
             IPAddress ip4address = Dns.GetHostAddresses(serverInfoObj.DynDnsAddress)[0];
@@ -34,7 +34,7 @@ namespace BotDLL.Model.Objects
             {
                 if (serverInfoObj.Game == Objects.Game.Minecraft)
                 {
-                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 1);
+                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 50);
                     serverStatObj = new()
                     {
                         ServerInfoId = serverInfoObj.ServerInfoId,
@@ -63,8 +63,8 @@ namespace BotDLL.Model.Objects
 
                     try
                     {
-                        queryConnection.Connect();
-                        InfoResponse infoResonceObj = queryConnection.GetInfo(maxRetries: 1);
+                        queryConnection.Connect(50);
+                        InfoResponse infoResonceObj = queryConnection.GetInfo();
                         serverStatObj = new()
                         {
                             ServerInfoId = serverInfoObj.ServerInfoId,
@@ -104,13 +104,13 @@ namespace BotDLL.Model.Objects
                 }
 
                 if (serverStatObj.ServerUp)
-                    b = false;
+                    falsePositive = false;
 
-                if (i % 4 == 0)
-                    b = false;
-                i++;
+                if (falsePositiveInt % 4 == 0)
+                    falsePositive = false;
+                falsePositiveInt++;
 
-            } while (b);
+            } while (falsePositive);
 
             return serverStatObj;
         }

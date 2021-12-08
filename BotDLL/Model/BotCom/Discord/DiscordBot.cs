@@ -336,9 +336,9 @@ namespace BotDLL.Model.BotCom.Discord
                 {
                     if(!mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId))
                     {
-                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
+                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.IsMinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
+                        else if (dC_UserdataObjItem.IsMinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
                         else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
                                  dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
