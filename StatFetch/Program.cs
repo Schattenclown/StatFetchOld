@@ -139,18 +139,9 @@ namespace StatFetch
             {
                 while (true)
                 {
-                    while (DateTime.Now.Second != 0)
+                    while (DateTime.Now.Second != 59)
                     {
-                        await Task.Delay(100);
-                    }
-
-                    serverInfoListUpTime = ServerInfo.ReadAll();
-
-                    serverStatListUpTime.Clear();
-                    foreach (ServerInfo serverInfoObj in serverInfoListUpTime)
-                    {
-                        ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
-                        serverStatListUpTime.Add(serverStatObj);
+                        await Task.Delay(200);
                     }
 
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -159,7 +150,15 @@ namespace StatFetch
                     ConsoleForamter.FillRow();
                     Console.ForegroundColor = ConsoleColor.Gray;
 
+                    serverInfoListUpTime = ServerInfo.ReadAll();
                     upTimeList = UpTime.ReadAll();
+
+                    serverStatListUpTime.Clear();
+                    foreach (ServerInfo serverInfoObj in serverInfoListUpTime)
+                    {
+                        ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
+                        serverStatListUpTime.Add(serverStatObj);
+                    }
 
                     foreach (ServerStat serverStatObjItem in serverStatListUpTime)
                     {
