@@ -4,7 +4,7 @@ namespace BotDLL.Model.Objects
 {
     public class DCUserdata
     {
-        public ushort Id { get; set; }
+        public ushort DCUserdataID { get; set; }
         public ulong AuthorId { get; set; }
         public ulong ChannelId { get; set; }
         public ushort ServerInfoId { get; set; }
@@ -26,9 +26,9 @@ namespace BotDLL.Model.Objects
         {
             DB_DCUserdata.Change(dC_UserdataObj);
         }
-        public static void CreateTable_Userdata()
+        public static void CreateTable()
         {
-            DB_DCUserdata.CreateTable_Userdata();
+            DB_DCUserdata.CreateTable();
         }
     }
 }

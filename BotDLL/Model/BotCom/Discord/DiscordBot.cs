@@ -291,7 +291,7 @@ namespace BotDLL.Model.BotCom.Discord
 
             foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
+                if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId)
                 {
                     if (!once)
                     {
@@ -336,12 +336,12 @@ namespace BotDLL.Model.BotCom.Discord
                 {
                     if(!mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId))
                     {
-                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
+                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && isminimal)
+                        else if (dC_UserdataObjItem.MinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "version" ||
-                                 dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id && whatchanged == "status")
+                        else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
+                                 dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
                             mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
                     }
                 }

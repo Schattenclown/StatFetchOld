@@ -6,9 +6,6 @@ namespace BotDLL.Persistence
 {
     public class DB_ServerInfo
     {
-
-        /*INSERT INTO ServerInfo(ServerInfo.Name, ServerInfo.DynDnsAddress, ServerInfo.Port) 
-        VALUES("Slate", "0x360x39.de", 22165)*/
         public static List<ServerInfo> ReadAll()
         {
             string sqlCommand = "SELECT * FROM ServerInfo";
@@ -20,10 +17,11 @@ namespace BotDLL.Persistence
             {
                 ServerInfo serverInfoObj = new()
                 {
-                    Id = mySqlDataReader.GetUInt16("Id"),
+                    ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
                     Name = mySqlDataReader.GetString("Name"),
                     DynDnsAddress = mySqlDataReader.GetString("DynDnsAddress"),
-                    Port = mySqlDataReader.GetUInt16("Port")
+                    Port = mySqlDataReader.GetUInt16("Port"),
+                    UpTimeInPercent = mySqlDataReader.GetUInt16("UpTimeInPercent")
                 };
                 if (mySqlDataReader.GetString("Game") == "Minecraft")
                     serverInfoObj.Game = Game.Minecraft;
@@ -36,7 +34,12 @@ namespace BotDLL.Persistence
             DB_Connection.CloseDB(mySqlConnection);
             return serverInfosList;
         }
-        public static void CreateTable_ServerInfo()
+        public static void Change(ServerInfo serverInfoObj)
+        {
+            string sqlCommand = $"UPDATE ServerInfo SET UpTimeInPercent={serverInfoObj.UpTimeInPercent.ToString().Replace(',', '.')} WHERE ServerInfoId={serverInfoObj.ServerInfoId}";
+            DB_Connection.ExecuteNonQuery(sqlCommand);
+        }
+        public static void CreateTable()
         {
             CSV_Connections cSV_Connections = new();
             Connections connections = CSV_Connections.ReadAll();
@@ -53,12 +56,13 @@ namespace BotDLL.Persistence
                             $"USE `{database}`;" +
                             "" +
                             "CREATE TABLE IF NOT EXISTS `ServerInfo` (" +
-                            "`Id` MEDIUMINT NOT NULL AUTO_INCREMENT," +
+                            "`ServerInfoId` MEDIUMINT NOT NULL AUTO_INCREMENT," +
                             "`Name` varchar(69) DEFAULT NULL," +
                             "`DynDnsAddress` varchar(69) DEFAULT NULL," +
                             "`Port` int DEFAULT NULL," +
                             "`Game` varchar(69) DEFAULT 'SourceGame'," +
-                            "PRIMARY KEY (Id)" +
+                            "`UpTimeInPercent` DOUBLE DEFAULT 100," +
+                            "PRIMARY KEY (ServerInfoId)" +
                             ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 
             DB_Connection.ExecuteNonQuery(sqlCommand);

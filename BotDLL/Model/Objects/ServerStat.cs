@@ -7,7 +7,7 @@ namespace BotDLL.Model.Objects
 {
     public class ServerStat
     {
-        public ushort Id { get; set; }
+        public ushort ServerInfoId { get; set; }
         public string? Name { get; set; }
         public string? DynDnsAddress { get; set; }
         public IPAddress? Address { get; set; }
@@ -20,6 +20,7 @@ namespace BotDLL.Model.Objects
         public string? Game { get; set; }
         public uint? GameID { get; set; }
         public DateTime FetchTime { get; set; }
+        public double UpTimeInPercent { get; set; }
         public static ServerStat CreateObj(ServerInfo serverInfoObj)
         {
             bool b = true;
@@ -33,10 +34,10 @@ namespace BotDLL.Model.Objects
             {
                 if (serverInfoObj.Game == Objects.Game.Minecraft)
                 {
-                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port);
+                    MineStat mineStatObj = new(ip4address.ToString(), serverInfoObj.Port, 1);
                     serverStatObj = new()
                     {
-                        Id = serverInfoObj.Id,
+                        ServerInfoId = serverInfoObj.ServerInfoId,
                         Name = serverInfoObj.Name,
                         DynDnsAddress = serverInfoObj.DynDnsAddress,
                         Address = ip4address,
@@ -48,7 +49,8 @@ namespace BotDLL.Model.Objects
                         Map = "Minecraft",
                         Game = "Minecraft",
                         GameID = 0,
-                        FetchTime = DateTime.Now
+                        FetchTime = DateTime.Now,
+                        UpTimeInPercent = serverInfoObj.UpTimeInPercent
                     };
                 }
                 else if (serverInfoObj.Game == Objects.Game.SourceGame)
@@ -62,10 +64,10 @@ namespace BotDLL.Model.Objects
                     try
                     {
                         queryConnection.Connect();
-                        InfoResponse infoResonceObj = queryConnection.GetInfo();
+                        InfoResponse infoResonceObj = queryConnection.GetInfo(maxRetries: 1);
                         serverStatObj = new()
                         {
-                            Id = serverInfoObj.Id,
+                            ServerInfoId = serverInfoObj.ServerInfoId,
                             Name = serverInfoObj.Name,
                             DynDnsAddress = serverInfoObj.DynDnsAddress,
                             Address = ip4address,
@@ -77,7 +79,8 @@ namespace BotDLL.Model.Objects
                             Map = infoResonceObj.Map,
                             Game = infoResonceObj.Game,
                             GameID = infoResonceObj.GameID,
-                            FetchTime = DateTime.Now
+                            FetchTime = DateTime.Now,
+                            UpTimeInPercent = serverInfoObj.UpTimeInPercent
                         };
                         if (infoResonceObj.Map == null)
                             infoResonceObj.Map = "Unknown";
@@ -88,7 +91,7 @@ namespace BotDLL.Model.Objects
                     {
                         serverStatObj = new()
                         {
-                            Id = serverInfoObj.Id,
+                            ServerInfoId = serverInfoObj.ServerInfoId,
                             Name = serverInfoObj.Name,
                             DynDnsAddress = serverInfoObj.DynDnsAddress,
                             Address = ip4address,
@@ -99,11 +102,11 @@ namespace BotDLL.Model.Objects
                         };
                     }
                 }
-                
+
                 if (serverStatObj.ServerUp)
                     b = false;
 
-                if (i % 5 == 0)
+                if (i % 4 == 0)
                     b = false;
                 i++;
 
@@ -113,7 +116,7 @@ namespace BotDLL.Model.Objects
         }
         public override string ToString()
         {
-            return $"██ {Id,5} ██ {Name,-10} ██ {DynDnsAddress,-15} ██ {Address,15}:{Port,-5} ██ {Players,3}/{MaxPlayers,-5} ██ {ServerUp,-5} ██ {Version,10} ██ {Map,-15} ██ {Game,-35} ██ {GameID,15} ██ {FetchTime,21} ██";
+            return $"██ {ServerInfoId,5} ██ {Name,-10} ██ {DynDnsAddress,-15} ██ {Address,15}:{Port,-5} ██ {Players,3}/{MaxPlayers,-5} ██ {ServerUp,-5} ██ {Version,10} ██ {Map,-15} ██ {Game,-35} ██ {GameID,15} ██ {UpTimeInPercent,5}% ██ {FetchTime,21} ██";
         }
     }
 }

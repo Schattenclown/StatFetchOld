@@ -10,18 +10,23 @@ namespace BotDLL.Model.Objects
     public class ServerInfo
     {
 
-        public ushort Id { get; set; }
+        public ushort ServerInfoId { get; set; }
         public string? Name { get; set; }
         public string? DynDnsAddress { get; set; }
         public ushort Port { get; set; }
         public Game Game { get; set; }
+        public double UpTimeInPercent { get; set; }
         public static List<ServerInfo> ReadAll()
         {
             return DB_ServerInfo.ReadAll();
         }
-        public static void CreateTable_ServerInfo()
+        public static void Update(ServerInfo serverInfoObj)
         {
-            DB_ServerInfo.CreateTable_ServerInfo();
+            DB_ServerInfo.Change(serverInfoObj);
+        }
+        public static void CreateTable()
+        {
+            DB_ServerInfo.CreateTable();
         }
     }
 }

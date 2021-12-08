@@ -12,12 +12,12 @@ namespace BotDLL.Persistence
             List<DCUserdata> dC_UserdataList = new();
             MySqlConnection mySqlConnection = DB_Connection.OpenDB();
             MySqlDataReader mySqlDataReader = DB_Connection.ExecuteReader(sqlCommand, mySqlConnection);
-            
+
             while (mySqlDataReader.Read())
             {
                 DCUserdata dC_UserdataObj = new()
                 {
-                    Id = mySqlDataReader.GetUInt16("Id"),
+                    DCUserdataID = mySqlDataReader.GetUInt16("DCUserdataID"),
                     AuthorId = mySqlDataReader.GetUInt64("AuthorId"),
                     ChannelId = mySqlDataReader.GetUInt64("ChannelId"),
                     ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
@@ -41,7 +41,7 @@ namespace BotDLL.Persistence
             string sqlCommand = $"UPDATE DC_Userdata SET Abo={dC_UserdataObj.Abo}, MinimalAbo={dC_UserdataObj.MinimalAbo} WHERE AuthorId={dC_UserdataObj.AuthorId} AND ChannelId={dC_UserdataObj.ChannelId} AND ServerInfoId={dC_UserdataObj.ServerInfoId}";
             DB_Connection.ExecuteNonQuery(sqlCommand);
         }
-        public static void CreateTable_Userdata()
+        public static void CreateTable()
         {
             Connections connetions = CSV_Connections.ReadAll();
 
@@ -56,13 +56,13 @@ namespace BotDLL.Persistence
             string sqlCommand = $"CREATE DATABASE IF NOT EXISTS `{database}`;" +
                             $"USE `{database}`;" +
                             "CREATE TABLE IF NOT EXISTS `DC_Userdata` (" +
-                            "`Id` MEDIUMINT NOT NULL AUTO_INCREMENT," +
+                            "`DCUserdataID` MEDIUMINT NOT NULL AUTO_INCREMENT," +
                             "`AuthorId` BIGINT NOT NULL," +
                             "`ChannelId` BIGINT DEFAULT NULL," +
                             "`ServerInfoId` MEDIUMINT DEFAULT NULL," +
                             "`Abo` MEDIUMINT DEFAULT NULL," +
                             "`MinimalAbo` MEDIUMINT DEFAULT NULL," +
-                            "PRIMARY KEY (Id)," +
+                            "PRIMARY KEY (DCUserdataID)," +
                             "KEY (ServerInfoId)" +
                             ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 

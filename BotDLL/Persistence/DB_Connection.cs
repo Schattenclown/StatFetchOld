@@ -15,10 +15,10 @@ namespace BotDLL.Persistence
             Connections connections = Connections.GetConnections();
 #pragma warning disable CS8601 // Mögliche Nullverweiszuweisung.
             token = connections.MySqlConStr;
-#pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
 #if DEBUG
             token = connections.MySqlConStrDebug;
 #endif
+#pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
         }
         public static MySqlConnection OpenDB()
         {

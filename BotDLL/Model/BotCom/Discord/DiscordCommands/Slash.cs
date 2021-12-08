@@ -105,6 +105,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                             discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
                         else
                             discordEmbedBuilder.AddField("Players", "N/A", true);
+                        discordEmbedBuilder.AddField("UpTime", serverStatObj.UpTimeInPercent + "%", true);
                     }
                     await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
 
@@ -165,14 +166,12 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             var serverNameChoices = await serverNameChoiceProvider.Provider();
 #pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             string serverName = serverNameChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == serverNameChoice.ToLower()).Name.ToLower();
-#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
             foreach (ServerInfo serverInfoObjItem in serverInfoList)
             {
                 serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
-#pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                     break;
@@ -181,6 +180,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             DiscordEmbedBuilder discordEmbedBuilder = new();
             discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
             discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
+            discordEmbedBuilder.AddField("UpTime", serverStatObj.UpTimeInPercent + "%", true);
             discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
             discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
@@ -326,14 +326,14 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 AuthorId = interactionContext.Member.Id,
                 ChannelId = interactionContext.Channel.Id,
-                ServerInfoId = serverStatObj.Id,
+                ServerInfoId = serverStatObj.ServerInfoId,
                 Abo = abo,
                 MinimalAbo = isMinimal
             };
 
             foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id && dC_UserdataObjItem.ServerInfoId == serverStatObj.Id)
+                if (dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId)
                     found = true;
             }
 
@@ -407,7 +407,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
                 {
-                    if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObjItem.Id && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
+                    if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObjItem.ServerInfoId && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
                     {
                         if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataObjItem.ChannelId)) && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
                             differentchannel.Add(Convert.ToUInt64(dC_UserdataObjItem.ChannelId));
@@ -438,7 +438,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 if (lastChannel == 0)
                     lastChannel = dC_UserdataObjItem.ChannelId;
 
-                string serverInfoName = serverInfoList.First(firstMatch => firstMatch.Id == dC_UserdataObjItem.ServerInfoId).Name;
+                string serverInfoName = serverInfoList.First(firstMatch => firstMatch.ServerInfoId == dC_UserdataObjItem.ServerInfoId).Name;
 
                 string aboType = "FULL";
                 if (dC_UserdataObjItem.MinimalAbo)
