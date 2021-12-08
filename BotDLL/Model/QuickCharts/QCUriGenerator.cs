@@ -29,16 +29,24 @@ namespace BotDLL.Model.QuickCharts
 
             string lables = "&labels=";
             string data1 = "&data1=";
+            string data2 = "&data2=";
 
             foreach (MonthStatistics monthStatisticsItem in serverInfoObj.MonthStatisticsList)
             {
-                lables += $"{monthStatisticsItem.Date.ToShortDateString()},";
-                data1 += $"{monthStatisticsItem.MaxPlayers},";
+                if(monthStatisticsItem.Date.Month == DateTime.Now.Month)
+                {
+                    lables += $"{monthStatisticsItem.Date.ToShortDateString()},";
+                    data1 += $"{monthStatisticsItem.MaxPlayers},";
+                }
+                else if(monthStatisticsItem.Date.Month == DateTime.Now.Month - 1)
+                {
+                    data2 += $"{monthStatisticsItem.MaxPlayers},";
+                }
             }
 
             lables = lables.TrimEnd(',');
             data1 = data1.TrimEnd(',');
-            quickChartString += lables += data1;
+            quickChartString += lables += data1 += data2;
             //Q1,Q2,Q3,Q4
             //50,40,30,20
 
