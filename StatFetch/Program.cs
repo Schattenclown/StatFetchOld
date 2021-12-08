@@ -12,7 +12,6 @@ namespace StatFetch
         private static List<ServerStat> serverStatListCompare0 = new();
         private static List<ServerStat> serverStatListCompare1 = new();
         public static List<UpTime> upTimeList = new();
-        private static string consoleString = "";
         static async Task Main()
         {
             int counter = 0;
@@ -45,7 +44,6 @@ namespace StatFetch
                 {
                     ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
                     serverStatListLive.Add(serverStatObj);
-                    consoleString += serverStatObj + "\n";
                 }
 
                 if (counter % 2 == 0)

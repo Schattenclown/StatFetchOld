@@ -98,7 +98,8 @@ namespace BotDLL.Model.Objects
                             Port = serverInfoObj.Port,
                             ServerUp = false,
                             Game = serverInfoObj.Game.ToString(),
-                            FetchTime = DateTime.Now
+                            FetchTime = DateTime.Now,
+                            UpTimeInPercent = serverInfoObj.UpTimeInPercent
                         };
                     }
                 }
