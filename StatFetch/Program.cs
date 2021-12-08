@@ -139,6 +139,11 @@ namespace StatFetch
             {
                 while (true)
                 {
+                    while (DateTime.Now.Second != 0)
+                    {
+                        await Task.Delay(100);
+                    }
+
                     serverInfoListUpTime = ServerInfo.ReadAll();
 
                     serverStatListUpTime.Clear();
@@ -215,11 +220,6 @@ namespace StatFetch
                                 ServerInfo.Update(serverInfoObjItem);
                             }
                         }
-                    }
-
-                    while (DateTime.Now.Second != 0)
-                    {
-                        await Task.Delay(100);
                     }
                 }
             });
