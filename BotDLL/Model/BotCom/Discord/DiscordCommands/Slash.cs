@@ -173,8 +173,8 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
                 if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
-#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                     break;
+#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
 
             DiscordEmbedBuilder discordEmbedBuilder = new();

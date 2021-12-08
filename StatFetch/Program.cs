@@ -12,7 +12,6 @@ namespace StatFetch
         private static List<ServerStat> serverStatListCompare0 = new();
         private static List<ServerStat> serverStatListCompare1 = new();
         public static List<UpTime> upTimeList = new();
-        private static string consoleString = "";
         static async Task Main()
         {
             int counter = 0;
@@ -45,7 +44,6 @@ namespace StatFetch
                 {
                     ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
                     serverStatListLive.Add(serverStatObj);
-                    consoleString += serverStatObj + "\n";
                 }
 
                 if (counter % 2 == 0)
@@ -141,13 +139,9 @@ namespace StatFetch
             {
                 while (true)
                 {
-                    serverInfoListUpTime = ServerInfo.ReadAll();
-
-                    serverStatListUpTime.Clear();
-                    foreach (ServerInfo serverInfoObj in serverInfoListUpTime)
+                    while (DateTime.Now.Second != 59)
                     {
-                        ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
-                        serverStatListUpTime.Add(serverStatObj);
+                        await Task.Delay(200);
                     }
 
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -156,7 +150,15 @@ namespace StatFetch
                     ConsoleForamter.FillRow();
                     Console.ForegroundColor = ConsoleColor.Gray;
 
+                    serverInfoListUpTime = ServerInfo.ReadAll();
                     upTimeList = UpTime.ReadAll();
+
+                    serverStatListUpTime.Clear();
+                    foreach (ServerInfo serverInfoObj in serverInfoListUpTime)
+                    {
+                        ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
+                        serverStatListUpTime.Add(serverStatObj);
+                    }
 
                     foreach (ServerStat serverStatObjItem in serverStatListUpTime)
                     {
@@ -217,11 +219,6 @@ namespace StatFetch
                                 ServerInfo.Update(serverInfoObjItem);
                             }
                         }
-                    }
-
-                    while (DateTime.Now.Second != 0)
-                    {
-                        await Task.Delay(100);
                     }
                 }
             });
