@@ -289,9 +289,9 @@ namespace BotDLL.Model.BotCom.Discord
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
 
-            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
+            foreach (DCUserdata dC_UserdataItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId)
+                if (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId)
                 {
                     if (!once)
                     {
@@ -323,26 +323,26 @@ namespace BotDLL.Model.BotCom.Discord
 
                         once = true;
                     }
-                    if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataObjItem.ChannelId)))
-                        differentchannel.Add(Convert.ToUInt64(dC_UserdataObjItem.ChannelId));
+                    if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataItem.ChannelId)))
+                        differentchannel.Add(Convert.ToUInt64(dC_UserdataItem.ChannelId));
                 }
             }
 
             string mensions = "";
 
-            foreach (ulong channelId in differentchannel)
+            foreach (ulong channelIdItem in differentchannel)
             {
-                foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
+                foreach (DCUserdata dC_UserdataItem in dC_UserdataList)
                 {
-                    if(!mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()) && channelId == Convert.ToUInt64(dC_UserdataObjItem.ChannelId))
+                    if (!mensions.Contains(dC_UserdataItem.AuthorId.ToString()) && channelIdItem == Convert.ToUInt64(dC_UserdataItem.ChannelId))
                     {
-                        if (dC_UserdataObjItem.Abo && !dC_UserdataObjItem.IsMinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataObjItem.AuthorId.ToString()))
-                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.IsMinimalAbo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
-                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
-                        else if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
-                                 dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
-                            mensions += $"<@{dC_UserdataObjItem.AuthorId}> \n";
+                        if (dC_UserdataItem.Abo && !dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataItem.AuthorId.ToString()))
+                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
+                        else if (dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
+                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
+                        else if (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
+                                 dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
+                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
                     }
                 }
 
@@ -351,7 +351,7 @@ namespace BotDLL.Model.BotCom.Discord
                 if (mensions != "" && mensions != " ")
                     discordEmbedBuilder.AddField("Mensions", mensions);
 
-                var channel = await Client.GetChannelAsync(channelId);
+                var channel = await Client.GetChannelAsync(channelIdItem);
                 if (channel != null && mensions != "")
                     await channel.SendMessageAsync(discordEmbedBuilder.Build());
 

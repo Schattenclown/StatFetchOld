@@ -54,9 +54,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
-            foreach (ServerInfo serverInfoObj in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
+                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
                 serverStatListLive.Add(serverStatObj);
             }
             var fourtytwoTypeChoiceProvider = new FourtytwoTypeChoiceProvider();
@@ -76,20 +76,20 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 bool isFull = "FULL".ToLower() == (fourtytwoTypeChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == fourtytwoChoice.ToLower()).Name.ToLower());
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
 
-                foreach (ServerStat serverStatObj in serverStatListLive)
+                foreach (ServerStat serverStatItem in serverStatListLive)
                 {
                     DiscordEmbedBuilder discordEmbedBuilder = new();
                     discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
-                    discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
-                    discordEmbedBuilder.AddField("Game", serverStatObj.Game, true);
-                    discordEmbedBuilder.AddField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true);
-                    discordEmbedBuilder.WithTimestamp(serverStatObj.FetchTime);
+                    discordEmbedBuilder.AddField($"Name", $"{serverStatItem.Name}", true);
+                    discordEmbedBuilder.AddField("Game", serverStatItem.Game, true);
+                    discordEmbedBuilder.AddField("Ip address", $"{serverStatItem.DynDnsAddress}:{serverStatItem.Port}", true);
+                    discordEmbedBuilder.WithTimestamp(serverStatItem.FetchTime);
 
 
-                    if (serverStatObj.ServerUp == true)
+                    if (serverStatItem.ServerUp == true)
                     {
                         discordEmbedBuilder.AddField("ServerUp", $"Online", true);
-                        discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
+                        discordEmbedBuilder.AddField("Players", $"{serverStatItem.Players}/{serverStatItem.MaxPlayers}", true);
                         discordEmbedBuilder.Color = DiscordColor.Green;
                     }
                     else
@@ -101,11 +101,11 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
                     if (isFull)
                     {
-                        if (serverStatObj.ServerUp == true)
-                            discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
+                        if (serverStatItem.ServerUp == true)
+                            discordEmbedBuilder.AddField("Version", $"{serverStatItem.Version}", true);
                         else
                             discordEmbedBuilder.AddField("Players", "N/A", true);
-                        discordEmbedBuilder.AddField("UpTime", serverStatObj.UpTimeInPercent + "%", true);
+                        discordEmbedBuilder.AddField("UpTime", serverStatItem.UpTimeInPercent + "%", true);
                     }
                     await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
 
@@ -125,9 +125,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
-            foreach (ServerInfo serverInfoObj in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
+                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
                 serverStatListLive.Add(serverStatObj);
             }
 
@@ -137,10 +137,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 Color = new DiscordColor(255, 0, 255)
             };
 
-            foreach (ServerStat serverStatObj in serverStatListLive)
+            foreach (ServerStat serverStatItem in serverStatListLive)
             {
 #pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
-                discordEmbedBuilder.AddField(serverStatObj.Name.ToUpper(), serverStatObj.Game.ToUpper());
+                discordEmbedBuilder.AddField(serverStatItem.Name.ToUpper(), serverStatItem.Game.ToUpper());
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
 
@@ -169,10 +169,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
-            foreach (ServerInfo serverInfoObjItem in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
-                if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
+                serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                if (serverInfoItem.Name.ToLower() == serverName.ToLower())
                     break;
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
@@ -244,10 +244,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             bool isMinimal = "MINIMAL".ToLower() == aboStateChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == aboTypeChoice.ToLower()).Name.ToLower();
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
-            foreach (ServerInfo serverInfoObjItem in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
-                DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoObjItem.Name, interactionContext, true, isMinimal);
+                DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoItem.Name, interactionContext, true, isMinimal);
 #pragma warning restore CS8604 // Mögliches Nullverweisargument.
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                 await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
@@ -288,10 +288,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
-            foreach (ServerInfo serverInfoObjItem in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
-                DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoObjItem.Name, interactionContext, false, false);
+                DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverInfoItem.Name, interactionContext, false, false);
 #pragma warning restore CS8604 // Mögliches Nullverweisargument.
                 await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
             }
@@ -313,11 +313,11 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
-            foreach (ServerInfo serverInfoObjItem in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
+                serverStatObj = ServerStat.CreateObj(serverInfoItem);
 #pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
-                if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
+                if (serverInfoItem.Name.ToLower() == serverName.ToLower())
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
                     break;
             }
@@ -331,9 +331,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 IsMinimalAbo = isMinimal
             };
 
-            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
+            foreach (DCUserdata dC_UserdataItem in dC_UserdataList)
             {
-                if (dC_UserdataObjItem.AuthorId == interactionContext.Member.Id && dC_UserdataObjItem.ChannelId == interactionContext.Channel.Id && dC_UserdataObjItem.ServerInfoId == serverStatObj.ServerInfoId)
+                if (dC_UserdataItem.AuthorId == interactionContext.Member.Id && dC_UserdataItem.ChannelId == interactionContext.Channel.Id && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId)
                     found = true;
             }
 
@@ -387,9 +387,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
-            foreach (ServerInfo serverInfoObj in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
+                ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
                 serverStatListLive.Add(serverStatObj);
             }
 
@@ -403,16 +403,16 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(DateTime.Now);
 
-            foreach (ServerStat serverStatObjItem in serverStatListLive)
+            foreach (ServerStat serverStatItem in serverStatListLive)
             {
-                foreach (DCUserdata dC_UserdataObjItem in dC_UserdataList)
+                foreach (DCUserdata dC_UserdataItem in dC_UserdataList)
                 {
-                    if (dC_UserdataObjItem.Abo && dC_UserdataObjItem.ServerInfoId == serverStatObjItem.ServerInfoId && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
+                    if (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatItem.ServerInfoId && Convert.ToUInt64(dC_UserdataItem.AuthorId) == interactionContext.Member.Id)
                     {
-                        if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataObjItem.ChannelId)) && Convert.ToUInt64(dC_UserdataObjItem.AuthorId) == interactionContext.Member.Id)
-                            differentchannel.Add(Convert.ToUInt64(dC_UserdataObjItem.ChannelId));
+                        if (!differentchannel.Contains(Convert.ToUInt64(dC_UserdataItem.ChannelId)) && Convert.ToUInt64(dC_UserdataItem.AuthorId) == interactionContext.Member.Id)
+                            differentchannel.Add(Convert.ToUInt64(dC_UserdataItem.ChannelId));
 
-                        dC_UserdataListAbo.Add(dC_UserdataObjItem);
+                        dC_UserdataListAbo.Add(dC_UserdataItem);
 
                         sub2nothing = false;
                     }
@@ -423,25 +423,25 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 discordEmbedBuilder.AddField("You are unsubscribed from everything", ":(");
             else
             {
-                foreach (ulong diffchn in differentchannel)
+                foreach (ulong differentChannelItem in differentchannel)
                 {
-                    foreach (DCUserdata dC_UserdatatObjItem in dC_UserdataListAbo)
+                    foreach (DCUserdata dC_UserdatatItem in dC_UserdataListAbo)
                     {
-                        if (!dC_UserdataListAboSorted.Contains(dC_UserdatatObjItem) && dC_UserdatatObjItem.ChannelId == diffchn)
-                            dC_UserdataListAboSorted.Add(dC_UserdatatObjItem);
+                        if (!dC_UserdataListAboSorted.Contains(dC_UserdatatItem) && dC_UserdatatItem.ChannelId == differentChannelItem)
+                            dC_UserdataListAboSorted.Add(dC_UserdatatItem);
                     }
                 }
             }
 
-            foreach (DCUserdata dC_UserdataObjItem in dC_UserdataListAboSorted)
+            foreach (DCUserdata dC_UserdataItem in dC_UserdataListAboSorted)
             {
                 if (lastChannel == 0)
-                    lastChannel = dC_UserdataObjItem.ChannelId;
+                    lastChannel = dC_UserdataItem.ChannelId;
 
-                string serverInfoName = serverInfoList.First(firstMatch => firstMatch.ServerInfoId == dC_UserdataObjItem.ServerInfoId).Name;
+                string serverInfoName = serverInfoList.First(firstMatch => firstMatch.ServerInfoId == dC_UserdataItem.ServerInfoId).Name;
 
                 string aboType = "FULL";
-                if (dC_UserdataObjItem.IsMinimalAbo)
+                if (dC_UserdataItem.IsMinimalAbo)
                     aboType = "MINIMAL";
 
 #pragma warning disable CS8604 // Mögliches Nullverweisargument.
@@ -449,15 +449,15 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 #pragma warning restore CS8604 // Mögliches Nullverweisargument.
                     servers += $"{aboType} - {serverInfoName}\n";
 
-                if (lastChannel != dC_UserdataObjItem.ChannelId)
+                if (lastChannel != dC_UserdataItem.ChannelId)
                 {
                     discordEmbedBuilder.AddField(servers, "<#" + lastChannel.ToString() + ">");
                     servers = "";
                     servers += $"{aboType} - {serverInfoName}\n";
-                    lastChannel = dC_UserdataObjItem.ChannelId;
+                    lastChannel = dC_UserdataItem.ChannelId;
                 }
 
-                if (dC_UserdataListAboSorted.Last() == dC_UserdataObjItem)
+                if (dC_UserdataListAboSorted.Last() == dC_UserdataItem)
                     discordEmbedBuilder.AddField(servers, "<#" + lastChannel.ToString() + ">");
             }
 
@@ -484,10 +484,10 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
-            foreach (ServerInfo serverInfoObjItem in serverInfoList)
+            foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                serverStatObj = ServerStat.CreateObj(serverInfoObjItem);
-                if (serverInfoObjItem.Name.ToLower() == serverName.ToLower())
+                serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                if (serverInfoItem.Name.ToLower() == serverName.ToLower())
                     break;
             }
 
