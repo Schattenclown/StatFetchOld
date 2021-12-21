@@ -37,7 +37,7 @@ namespace BotDLL.Model.HelpClasses
             try
             {
                 FillRow();
-                Center($"██ {"Id",5} ██ {"Name",-10} ██ {"DynDnsAddress",-15} ██ {"Address",15}:{"Port",-5} ██ {"pL",3}/{"MpL",-5} ██ {"IsUp",-5} ██ {"Version",10} ██ {"Map",-15} ██ {"Game",-35} ██ {"GameID",15} ██ {"uTime",5}% ██ {"FetchTime",21} ██");
+                Center($"██ {"Id",5} ██ {"Name",-10} ██ {"DynDnsAddress",-15} ██ {"Address",15}:{"Port",-5} ██ {"pL",3}/{"MpL",-5} ██ {"IsUp",-5} ██ {"Version",10} ██ {"Map",-20} ██ {"Game",-35} ██ {"GameID",15} ██ {"uTime",5}% ██ {"FetchTime",21} ██");
                 FillRow();
                 foreach (ServerStat serverStatObjItem in serverStatList)
                 {
