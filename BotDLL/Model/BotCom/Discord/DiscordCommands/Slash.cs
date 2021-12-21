@@ -16,11 +16,14 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         /// <summary>
         /// Send the help of this bot.
         /// </summary>
-        /// <param name="inertactionContext">The interaction context.</param>
+        /// <param name="interactionContext">The interaction context.</param>
         [SlashCommand("help", "StatFetch Help", true)]
-        public static async Task HelpAsync(InteractionContext inertactionContext)
+        public static async Task HelpAsync(InteractionContext interactionContext)
         {
-            await inertactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             DiscordEmbedBuilder discordEmbedBuilder = new()
             {
@@ -41,7 +44,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
             discordEmbedBuilder.WithTimestamp(DateTime.Now);
 
-            await inertactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
+            await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
         }
 
         /// <summary>
@@ -52,6 +55,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task ShowServerStatusAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(FourtytwoTypeChoiceProvider))][Option("Type", "Type")] string fourtytwoChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
@@ -123,6 +129,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task ListAsync(InteractionContext interactionContext)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             List<ServerStat> serverStatListLive = new();
@@ -162,6 +171,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task StatusAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "status")] string serverNameChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -213,6 +225,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task StatisticsAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "statistics")] string serverNameChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -275,6 +290,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task AddAboAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "adding")] string serverNameChoice, [ChoiceProvider(typeof(AboTypeChoiceProvider))][Option("Type", "Type")] string aboTypeChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -300,6 +318,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task AddAllAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(AboTypeChoiceProvider))][Option("Type", "Type")] string aboTypeChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var aboStateChoiceProvider = new AboTypeChoiceProvider();
             var aboStateChoices = await aboStateChoiceProvider.Provider();
@@ -328,6 +349,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task DelAboAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "deleting")] string serverNameChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
@@ -348,6 +372,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task DelAllAsync(InteractionContext interactionContext)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             foreach (ServerInfo serverInfoItem in serverInfoList)
@@ -437,6 +464,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task ShowAboAsync(InteractionContext interactionContext)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             List<DCUserdata> dC_UserdataList = DB_DCUserdata.ReadAll();
             List<DCUserdata> dC_UserdataListAbo = new();
@@ -534,6 +564,9 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         public static async Task TestAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider))][Option("Server", "testserver")] string serverNameChoice, [ChoiceProvider(typeof(TestFunctionsChoiceProvider))][Option("Function", "function")] string testFunctionChoice)
         {
             await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
+            discordEmbedBuilderLoading.WithDescription("Loading... ");
+            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
 
             var serverNameChoiceProvider = new ServerNameChoiceProvider();
             var serverNameChoices = await serverNameChoiceProvider.Provider();
