@@ -71,11 +71,46 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
 
 #pragma warning disable CS8602 // Dereferenzierung eines möglichen Nullverweises.
             if ("STATISTICS".ToLower() == fourtytwoTypeChoices.First(firstMatch => firstMatch.Value.ToString().ToLower() == fourtytwoChoice.ToLower()).Name.ToLower())
-#pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             {
-                DiscordEmbedBuilder discordEmbedBuilder = new();
-                discordEmbedBuilder.Title = "Statistics N/A";
-                await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
+                foreach (ServerStat serverStatItem in serverStatListLive)
+                {
+                    DiscordEmbedBuilder discordEmbedBuilder = new();
+
+                    foreach (ServerInfo serverInfoItem in serverInfoList)
+                    {
+                        if(serverInfoItem.ServerInfoId == serverStatItem.ServerInfoId)
+                        {
+                            serverInfoItem.QCUri = new Uri(QCUriGenerator.CreateObj(serverInfoItem).QCUri.AbsoluteUri);
+                            discordEmbedBuilder.ImageUrl = serverInfoItem.QCUri.AbsoluteUri;
+                        }
+                    }
+
+                    discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
+                    discordEmbedBuilder.AddField($"Name", $"{serverStatItem.Name}", true);
+                    discordEmbedBuilder.AddField("Game", serverStatItem.Game, true);
+                    discordEmbedBuilder.AddField("Ip address", $"{serverStatItem.DynDnsAddress}:{serverStatItem.Port}", true);
+                    discordEmbedBuilder.WithTimestamp(serverStatItem.FetchTime);
+
+                    if (serverStatItem.ServerUp == true)
+                    {
+                        discordEmbedBuilder.AddField("ServerUp", $"Online", true);
+                        discordEmbedBuilder.AddField("Players", $"{serverStatItem.Players}/{serverStatItem.MaxPlayers}", true);
+                        discordEmbedBuilder.Color = DiscordColor.Green;
+                        //buggy
+                        //discordEmbedBuilder.AddField("Version", $"{serverStatItem.Version}", true);
+                    }
+                    else
+                    {
+                        discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
+                        //buggy
+                        //discordEmbedBuilder.AddField("Version", "N/A", true);
+                        discordEmbedBuilder.Color = DiscordColor.Red;
+                        discordEmbedBuilder.AddField("Players", "N/A", true);
+                        discordEmbedBuilder.AddField("UpTime", serverStatItem.UpTimeInPercent + "%", true);
+                    }
+
+                    await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
+                }
             }
             else
             {
@@ -115,7 +150,6 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                         discordEmbedBuilder.AddField("UpTime", serverStatItem.UpTimeInPercent + "%", true);
                     }
                     await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
-
                 }
             }
             await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Finished!"));
@@ -266,14 +300,16 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
             {
                 discordEmbedBuilder.AddField("ServerUp", $"Online", true);
                 discordEmbedBuilder.AddField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true);
-                discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
+                //there is a bug somewhere
+                //discordEmbedBuilder.AddField("Version", $"{serverStatObj.Version}", true);
                 discordEmbedBuilder.Color = DiscordColor.Green;
             }
             else
             {
                 discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
                 discordEmbedBuilder.AddField("Players", "N/A", true);
-                discordEmbedBuilder.AddField("Version", "N/A", true);
+                //there is a bug somewhere
+                //discordEmbedBuilder.AddField("Version", "N/A", true);
                 discordEmbedBuilder.Color = DiscordColor.Red;
             }
 
