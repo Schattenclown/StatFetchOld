@@ -25,8 +25,6 @@ namespace BotDLL.Model.QuickCharts
 
             if (serverInfoObj != null)
             {
-
-
                 string quickChartString = $"https://quickchart.io/chart/render/{token}?title={serverInfoObj.Name.Replace(" ", "%20")}";
 
                 serverInfoObj = MonthStatistics.Read(serverInfoObj);
@@ -35,17 +33,31 @@ namespace BotDLL.Model.QuickCharts
                 string data1 = "&data1=";
                 string data2 = "&data2=";
 
+                int i = 0;
+
                 foreach (MonthStatistics monthStatisticsItem in serverInfoObj.MonthStatisticsList)
                 {
-                    if (monthStatisticsItem.Date.Month == DateTime.Now.Month)
+                    if(i < 30)
                     {
                         lables += $"{monthStatisticsItem.Date.ToShortDateString()},";
                         data1 += $"{monthStatisticsItem.MaxPlayers},";
                     }
-                    else if (monthStatisticsItem.Date.Month == DateTime.Now.Month - 1)
+                    else if (i < 60)
                     {
                         data2 += $"{monthStatisticsItem.MaxPlayers},";
                     }
+
+                    /*if (monthStatisticsItem.Date.Month == DateTime.Now.Month)
+                    {
+                        lables += $"{monthStatisticsItem.Date.ToShortDateString()},";
+                        data1 += $"{monthStatisticsItem.MaxPlayers},";
+                    }
+                    else if (monthStatisticsItem.Date.Month == DateTime.Now.AddMonths(-1).Month)
+                    {
+                        data2 += $"{monthStatisticsItem.MaxPlayers},";
+                    }*/
+
+                    i++;
                 }
 
                 lables = lables.TrimEnd(',');
