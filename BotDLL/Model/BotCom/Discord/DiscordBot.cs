@@ -96,6 +96,9 @@ namespace BotDLL.Model.BotCom.Discord
 #pragma warning restore CS8618 // Ein Non-Nullable-Feld muss beim Beenden des Konstruktors einen Wert ungleich NULL enthalten. Erwägen Sie die Deklaration als Nullable.
         public static readonly ulong testguild = 881868642600505354;
         public static string prefix = "sf/";
+        public static bool custom = false;
+        public static UserStatus customstatus = UserStatus.Online;
+        public static string customstate = $"{prefix}help";
 
         /// <summary>
         /// Binarie to text.
