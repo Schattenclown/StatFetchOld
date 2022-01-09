@@ -27,8 +27,8 @@ namespace BotDLL.Model.BotCom.Discord.Events
             Console.ForegroundColor = ConsoleColor.Gray;
             DiscordActivity activity = new DiscordActivity()
             {
-                Name = DiscordBot.custom ? DiscordBot.customstate : $"{DiscordBot.prefix}help",
-                ActivityType = ActivityType.Playing
+                Name = DiscordBot.custom ? DiscordBot.customstate : $"/help",
+                ActivityType = ActivityType.Streaming
             };
             await dcl.UpdateStatusAsync(activity: activity, userStatus: DiscordBot.custom ? DiscordBot.customstatus : UserStatus.Online, idleSince: null);
             await Task.Delay(100);
