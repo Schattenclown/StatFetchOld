@@ -97,8 +97,8 @@ namespace BotDLL.Model.BotCom.Discord
         public static readonly ulong testguild = 881868642600505354;
         public static string prefix = "sf/";
         public static bool custom = false;
-        public static UserStatus customstatus = UserStatus.Online;
-        public static string customstate = $"{prefix}help";
+        public static UserStatus customstatus = UserStatus.Streaming;
+        public static string customstate = $"/help";
 
         /// <summary>
         /// Binarie to text.
