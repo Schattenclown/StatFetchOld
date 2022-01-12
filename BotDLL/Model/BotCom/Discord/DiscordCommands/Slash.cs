@@ -121,7 +121,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 foreach (ServerStat serverStatItem in serverStatListLive)
                 {
                     DiscordEmbedBuilder discordEmbedBuilder = new();
-                    discordEmbedBuilder.WithDescription("             ⁣   ⁣                                             ⁣");
+                    discordEmbedBuilder.WithDescription("                                                                ⁣");
                     discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
                     discordEmbedBuilder.AddField($"Name", $"{serverStatItem.Name}", true);
                     discordEmbedBuilder.AddField("Game", serverStatItem.Game, true);
