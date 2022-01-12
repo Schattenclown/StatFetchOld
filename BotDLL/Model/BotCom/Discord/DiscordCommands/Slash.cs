@@ -121,6 +121,7 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                 foreach (ServerStat serverStatItem in serverStatListLive)
                 {
                     DiscordEmbedBuilder discordEmbedBuilder = new();
+                    discordEmbedBuilder.WithDescription("             ⁣   ⁣                                             ⁣");
                     discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
                     discordEmbedBuilder.AddField($"Name", $"{serverStatItem.Name}", true);
                     discordEmbedBuilder.AddField("Game", serverStatItem.Game, true);
@@ -137,18 +138,21 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
                     else
                     {
                         discordEmbedBuilder.AddField("ServerUp", $"Offline", true);
-                        discordEmbedBuilder.AddField("Version", "N/A", true);
+                        //discordEmbedBuilder.AddField("Version", "N/A", true);
                         discordEmbedBuilder.Color = DiscordColor.Red;
                     }
 
                     if (isFull)
                     {
                         if (serverStatItem.ServerUp == true)
-                            discordEmbedBuilder.AddField("Version", $"{serverStatItem.Version}", true);
+                        {
+                            //discordEmbedBuilder.AddField("Version", $"{serverStatItem.Version}", true);
+                        }
                         else
                             discordEmbedBuilder.AddField("Players", "N/A", true);
                         discordEmbedBuilder.AddField("UpTime", serverStatItem.UpTimeInPercent + "%", true);
                     }
+
                     await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
                 }
             }
