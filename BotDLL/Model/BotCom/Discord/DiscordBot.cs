@@ -149,7 +149,13 @@ namespace BotDLL.Model.BotCom.Discord
             };
 
             Client = new DiscordClient(cfg);
-            ApplicationCommands = Client.UseApplicationCommands();
+            ApplicationCommands = Client.UseApplicationCommands(new ApplicationCommandsConfiguration()
+            {
+                EnableDefaultHelp = false,
+                DebugStartup = true,
+                ManualOverride = true
+            });
+
             CNext = Client.UseCommandsNext(new CommandsNextConfiguration
             {
                 StringPrefixes = new string[] { prefix },
@@ -265,14 +271,15 @@ namespace BotDLL.Model.BotCom.Discord
         /// <param name="ac">The application commands extensions.</param>
         private static void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension ac)
         {
-            cnext.RegisterCommands<DiscordCommands.Main>();
+            cnext.RegisterCommands<Discord.DiscordCommands.Main>();
 #if DEBUG
-            ac.RegisterCommands<DiscordCommands.Slash>(testguild, perms =>
+            ac.RegisterGuildCommands<DiscordCommands.Slash>(testguild, perms =>
             {
                 perms.AddRole(889266812267663380, true);
             });
 #else
-            ac.RegisterCommands<DiscordCommands.Slash>();
+            ac.RegisterGuildCommands<DiscordCommands.Slash>(928930967140331590);
+            ac.RegisterGuildCommands<DiscordCommands.Slash>(881868642600505354);
 #endif
         }
         #endregion

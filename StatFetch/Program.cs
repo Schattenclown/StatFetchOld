@@ -72,14 +72,14 @@ namespace StatFetch
 
                 ChangeCheck();
 
-                if (counter == 60)
+                if (counter == 60 / 5)
                 {
                     serverInfoList = ServerInfo.ReadAll();
                     counter = 0;
                 }
 
                 counter++;
-                await Task.Delay(1000);
+                await Task.Delay(1000 * 5);
             }
         }
         static void ChangeCheck()
