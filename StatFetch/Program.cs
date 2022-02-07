@@ -15,6 +15,17 @@ namespace StatFetch
         public static List<UpTime> upTimeList = new();
         static async Task Main()
         {
+            try
+            {
+                await StartAsync();
+            }
+            catch
+            {
+                Reset.RestartProgram();
+            }
+        }
+        static async Task StartAsync()
+        {
             int counter = 0;
             #region ConsoleSize
             try
@@ -36,10 +47,6 @@ namespace StatFetch
             MonthStatistics.CreateTables(serverInfoList);
             Task upTimeCheckTask = UpTimeCheck();
             Task maxPlayerCheck = MaxPlayerCheck();
-
-            ServerInfo serverInfoTest = serverInfoList.FirstOrDefault();
-            
-            QCUriGenerator.CreateObj(serverInfoTest);
 
             discordBot = new DiscordBot();
             await discordBot.RunAsync();
