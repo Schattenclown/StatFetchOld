@@ -59,13 +59,10 @@ namespace BotDLL.Persistence
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 return mySqlDataReader;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"{"".PadRight(Console.WindowWidth - 2, '█')}");
-                ConsoleForamter.Center("DB IS DEAD");
-                Console.WriteLine($"{"".PadRight(Console.WindowWidth - 2, '█')}");
-                Reset.RestartProgram();
-                throw new Exception("DB DeaD " + ex.Message);
+                Reset.RestartProgram(new Exception("DB DEAD"));
+                throw;
             }
         }
     }

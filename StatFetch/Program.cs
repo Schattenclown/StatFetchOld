@@ -19,9 +19,9 @@ namespace StatFetch
             {
                 await StartAsync();
             }
-            catch
+            catch (Exception ex)
             {
-                Reset.RestartProgram();
+                Reset.RestartProgram(ex);
             }
         }
         static async Task StartAsync()
