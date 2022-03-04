@@ -5,8 +5,9 @@ using DisCatSharp.ApplicationCommands;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
 using BotDLL.Model.QuickCharts;
+using BotDLL.Model.BotCom.Discord.DiscordCommands;
 
-namespace BotDLL.Model.BotCom.Discord.DiscordCommands
+namespace BotDLL.Model.BotCom.Discord.Interaction
 {
     /// <summary>
     /// The slash commands.

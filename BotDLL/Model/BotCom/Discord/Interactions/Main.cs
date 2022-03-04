@@ -1,9 +1,10 @@
-﻿using DisCatSharp.CommandsNext;
+﻿using BotDLL.Model.BotCom.Discord;
+using DisCatSharp.CommandsNext;
 using DisCatSharp.CommandsNext.Attributes;
 using DisCatSharp.Entities;
 using System.Threading.Tasks;
 
-namespace BotDLL.Model.BotCom.Discord.DiscordCommands
+namespace BotDLL.Model.BotCom.Discord.Interaction
 {
     /// <summary>
     /// The MAIN.
@@ -13,7 +14,8 @@ namespace BotDLL.Model.BotCom.Discord.DiscordCommands
         /// <summary>
         /// prob. does nothing
         /// </summary>
-        /// <param name="ctx">The command context.</param>
+        /// <param name="ctx">The ctx.</param>
+        /// <returns>A Task.</returns>
         [Command("ping"), Description("Ping")]
         public async Task PingAsync(CommandContext ctx)
         {

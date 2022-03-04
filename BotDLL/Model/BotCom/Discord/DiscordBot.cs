@@ -10,6 +10,7 @@ using DisCatSharp.Interactivity.EventHandling;
 using DisCatSharp.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
 using System.Text;
+using BotDLL.Model.BotCom.Discord.Interaction;
 using static BotDLL.Model.BotCom.Discord.Events.ApplicationCommandsEvents;
 using static BotDLL.Model.BotCom.Discord.Events.ClientEvents;
 using static BotDLL.Model.BotCom.Discord.Events.GuildEvents;
@@ -271,15 +272,18 @@ namespace BotDLL.Model.BotCom.Discord
         /// <param name="ac">The application commands extensions.</param>
         private static void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension ac)
         {
-            cnext.RegisterCommands<Discord.DiscordCommands.Main>();
+            cnext.RegisterCommands<Discord.Interaction.Main>();
 #if DEBUG
-            ac.RegisterGuildCommands<DiscordCommands.Slash>(testguild, perms =>
+            ac.RegisterGuildCommands<Discord.Interaction.Slash>(testguild, perms =>
             {
                 perms.AddRole(889266812267663380, true);
             });
+            ac.RegisterGuildCommands<Discord.Interaction.Slash>(testguild);
 #else
-            ac.RegisterGuildCommands<DiscordCommands.Slash>(928930967140331590);
-            ac.RegisterGuildCommands<DiscordCommands.Slash>(881868642600505354);
+            ac.RegisterGuildCommands<Discord.Interaction.Slash>(928930967140331590, perms =>
+            {
+                perms.AddRole(444152594898878474, true);
+            });
 #endif
         }
         #endregion
