@@ -221,13 +221,15 @@ namespace BotDLL.Model.BotCom.Discord.Interaction
 
             List<ServerInfo> serverInfoList = ServerInfo.ReadAll();
             ServerStat serverStatObj = new();
+            ServerInfo serverInfo = new();
             foreach (ServerInfo serverInfoItem in serverInfoList)
             {
-                serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                serverInfo = serverInfoItem;
                 if (serverInfoItem.Name.ToLower() == serverName.ToLower())
                     break;
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
+            serverStatObj = ServerStat.CreateObj(serverInfo);
 
             DiscordEmbedBuilder discordEmbedBuilder = new();
             discordEmbedBuilder.AddField($"Name", $"{serverStatObj.Name}", true);
@@ -281,12 +283,12 @@ namespace BotDLL.Model.BotCom.Discord.Interaction
             {
                 if (serverInfoItem.Name.ToLower() == serverName.ToLower())
                 {
-                    serverStatObj = ServerStat.CreateObj(serverInfoItem);
                     serverInfoObj = serverInfoItem;
                     break;
                 }
 #pragma warning restore CS8602 // Dereferenzierung eines möglichen Nullverweises.
             }
+            serverStatObj = ServerStat.CreateObj(serverInfoObj);
 
             DiscordEmbedBuilder discordEmbedBuilder = new();
 
