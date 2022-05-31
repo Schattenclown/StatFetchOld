@@ -15,40 +15,6 @@ namespace BotDLL.Model.BotCom.Discord.Interaction
     internal class Slash : ApplicationCommandsModule
     {
         /// <summary>
-        /// Send the help of this bot.
-        /// </summary>
-        /// <param name="interactionContext">The interaction context.</param>
-        [SlashCommand("help", "StatFetch Help", true)]
-        public static async Task HelpAsync(InteractionContext interactionContext)
-        {
-            await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-            DiscordEmbedBuilder discordEmbedBuilderLoading = new();
-            discordEmbedBuilderLoading.WithDescription("Loading... ");
-            await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilderLoading.Build()));
-
-            DiscordEmbedBuilder discordEmbedBuilder = new()
-            {
-                Title = "Help",
-                Description = "This is the command help for the StatFetch Bot",
-                Color = new DiscordColor(255, 0, 255)
-            };
-            discordEmbedBuilder.AddField("/42", "Show´s every Server with their informations");
-            discordEmbedBuilder.AddField("/list", "Show´s the server list");
-            discordEmbedBuilder.AddField("/status", "Show´s status from a singel server");
-            discordEmbedBuilder.AddField("/add", "Adds you to an subscription for a server");
-            discordEmbedBuilder.AddField("/addall", "Adds you to every serversubscription");
-            discordEmbedBuilder.AddField("/del", "About what server do you wont get notified anymore");
-            discordEmbedBuilder.AddField("/delall", "Deletes you from every serversubscription");
-            discordEmbedBuilder.AddField("/abo", "Show´s about what servers you will get notified");
-            discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
-            discordEmbedBuilder.WithAuthor("StatFetch help");
-            discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
-            discordEmbedBuilder.WithTimestamp(DateTime.Now);
-
-            await interactionContext.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(discordEmbedBuilder.Build()));
-        }
-
-        /// <summary>
         /// Show´s every Server with their informations
         /// </summary>
         /// <param name="interactionContext">The interaction context.</param>
