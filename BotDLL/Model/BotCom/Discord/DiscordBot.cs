@@ -152,7 +152,7 @@ namespace BotDLL.Model.BotCom.Discord
             Client = new DiscordClient(cfg);
             ApplicationCommands = Client.UseApplicationCommands(new ApplicationCommandsConfiguration()
             {
-                EnableDefaultHelp = false,
+                EnableDefaultHelp = true,
                 DebugStartup = true,
                 ManualOverride = true
             });
