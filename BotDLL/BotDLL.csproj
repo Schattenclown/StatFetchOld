@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.0.1-nightly-00381" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.0.1-nightly-00381" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.0.1-nightly-00381" />
-    <PackageReference Include="DisCatSharp.Common" Version="10.0.1-nightly-00381" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.0.1-nightly-00381" />
+    <PackageReference Include="DisCatSharp" Version="10.0.1-nightly-00402" />
+    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.0.1-nightly-00402" />
+    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.0.1-nightly-00402" />
+    <PackageReference Include="DisCatSharp.Common" Version="10.0.1-nightly-00402" />
+    <PackageReference Include="DisCatSharp.Interactivity" Version="10.0.1-nightly-00402" />
     <PackageReference Include="MineStat" Version="2.1.1" />
     <PackageReference Include="MySql.Data" Version="8.0.29" />
     <PackageReference Include="Okolni.Source.Query" Version="1.1.0" />

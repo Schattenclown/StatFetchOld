@@ -271,7 +271,7 @@ namespace BotDLL.Model.BotCom.Discord
 #if DEBUG
             appCommands.RegisterGuildCommands<Discord.Interaction.Slash>(devguild); // use to register on guild
 #else
-            appCommands.RegisterGlobalCommands<Discord.Interaction.Slash>(); // use to register global (can take up to an hour)
+            appCommands.RegisterGlobalCommands<Discord.Interaction.Slash(928930967140331590) >(); // use to register global (can take up to an hour)
 #endif
         }
 
