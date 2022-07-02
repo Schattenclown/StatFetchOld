@@ -332,34 +332,34 @@ namespace BotDLL.Model.BotCom.Discord
                 }
             }
 
-            string mensions = "";
+            string mentions = "";
 
             foreach (ulong channelIdItem in differentchannel)
             {
                 foreach (DCUserdata dC_UserdataItem in dC_UserdataList)
                 {
-                    if (!mensions.Contains(dC_UserdataItem.AuthorId.ToString()) && channelIdItem == Convert.ToUInt64(dC_UserdataItem.ChannelId))
+                    if (!mentions.Contains(dC_UserdataItem.AuthorId.ToString()) && channelIdItem == Convert.ToUInt64(dC_UserdataItem.ChannelId))
                     {
-                        if (dC_UserdataItem.Abo && !dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && !mensions.Contains(dC_UserdataItem.AuthorId.ToString()))
-                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
+                        if (dC_UserdataItem.Abo && !dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && !mentions.Contains(dC_UserdataItem.AuthorId.ToString()))
+                            mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
                         else if (dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
-                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
+                            mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
                         else if (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
                                  dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
-                            mensions += $"<@{dC_UserdataItem.AuthorId}> \n";
+                            mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
                     }
                 }
 
                 if (discordEmbedBuilder.Fields.Count == 3)
                     discordEmbedBuilder.RemoveFieldAt(2);
-                if (mensions != "" && mensions != " ")
-                    discordEmbedBuilder.AddField("Mensions", mensions);
+                if (mentions != "" && mentions != " ")
+                    discordEmbedBuilder.AddField("Mentions", mentions);
 
                 var channel = await Client.GetChannelAsync(channelIdItem);
-                if (channel != null && mensions != "")
+                if (channel != null && mentions != "")
                     await channel.SendMessageAsync(discordEmbedBuilder.Build());
 
-                mensions = "";
+                mentions = "";
             }
         }
     }
