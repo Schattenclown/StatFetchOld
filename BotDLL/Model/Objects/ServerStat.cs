@@ -117,7 +117,7 @@ namespace BotDLL.Model.Objects
         }
         public override string ToString()
         {
-            return $"██ {ServerInfoId,5} ██ {Name,-10} ██ {DynDnsAddress,-15} ██ {Address,15}:{Port,-5} ██ {Players,3}/{MaxPlayers,-5} ██ {ServerUp,-5} ██ {Version,10} ██ {Map,-20} ██ {Game,-35} ██ {GameID,15} ██ {UpTimeInPercent,5}% ██ {FetchTime,21} ██";
+            return $"██ {ServerInfoId,5} ██ {Name,-10} ██ {DynDnsAddress,-15} ██ {Address,15}:{Port,-5} ██ {Players,3}/{MaxPlayers,-5} ██ {ServerUp,-5} ██ {Version,12} ██ {Map,-20} ██ {Game,-35} ██ {GameID,15} ██ {UpTimeInPercent,5}% ██ {FetchTime,21} ██";
         }
     }
 }

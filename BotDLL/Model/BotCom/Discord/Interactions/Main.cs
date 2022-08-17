@@ -23,7 +23,7 @@ namespace BotDLL.Model.BotCom.Discord.Interaction
         }
 
         [Command("mode"), Description("Change the appearance of the bots status")]
-        public async Task SetModeAsync(CommandContext ctx, [Description("Status mode to set. [ 1=offline | 2=online | 3=dnd] ")] int sts = 2, [Description("Status message to set."), RemainingText] string msg = null)
+        public async Task SetModeAsync(CommandContext ctx, [Description("Status mode to set. [ 1=offline | 2=online | 3=dnd] ")] int sts = 2, [Description("Status message to set."), RemainingText] string? msg = default)
         {
             if (msg == null)
             {
