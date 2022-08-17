@@ -128,7 +128,7 @@ namespace StatFetch
 
 
                      bool isminimal = false;
-                     if (serverStatCompareItem0.Players == 1 && serverStatCompareItem1.Players == 0 || serverStatCompareItem0.Players == 0 && serverStatCompareItem1.Players == 1)
+                     if ((serverStatCompareItem0.Players == 1 && serverStatCompareItem1.Players == 0) || (serverStatCompareItem0.Players == 0 && serverStatCompareItem1.Players == 1))
                         isminimal = true;
 
                      if (serverStatCompareItem0.ServerUp != serverStatCompareItem1.ServerUp)
@@ -214,7 +214,7 @@ namespace StatFetch
                            if (upTimeItem.Unsuccessful == 0)
                               upTimeItem.InPercent = 100.0;
                            else
-                              upTimeItem.InPercent = Math.Round((Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100), 2);
+                              upTimeItem.InPercent = Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
                            serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
                            UpTime.Change(upTimeItem);
                         }
@@ -224,7 +224,7 @@ namespace StatFetch
                            if (upTimeItem.Successful == 0)
                               upTimeItem.InPercent = 0.0;
                            else
-                              upTimeItem.InPercent = Math.Round((Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100), 2);
+                              upTimeItem.InPercent = Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
                            serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
                            UpTime.Change(upTimeItem);
                         }

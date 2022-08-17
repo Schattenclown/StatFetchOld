@@ -15,17 +15,17 @@ namespace BotDLL.Model.QuickCharts
 #pragma warning disable CS8601 // Mögliche Nullverweiszuweisung.
             token = connections.QuickChartApi;
 #if DEBUG
-                token = connections.QuickChartApiDebug;
+            token = connections.QuickChartApiDebug;
 #endif
 #pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
             virgin = false;
          }
 
-         QCUriGenerator QCUriObj = new QCUriGenerator();
+         QCUriGenerator QCUriObj = new();
 
          if (serverInfoObj != null)
          {
-            string quickChartString = $"https://quickchart.io/chart/render/{token}?title={serverInfoObj.Name.Replace(" ", "%20")}";
+            string quickChartString = $"https://quickchart.io/chart/render/{token}?title={serverInfoObj.Name?.Replace(" ", "%20")}";
 
             serverInfoObj = MonthStatistics.Read(serverInfoObj);
 

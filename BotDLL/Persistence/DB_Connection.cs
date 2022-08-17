@@ -14,7 +14,7 @@ namespace BotDLL.Persistence
 #pragma warning disable CS8601 // Mögliche Nullverweiszuweisung.
          token = connections.MySqlConStr;
 #if DEBUG
-            token = connections.MySqlConStrDebug;
+         token = connections.MySqlConStrDebug;
 #endif
 #pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
       }

@@ -16,23 +16,28 @@ namespace BotDLL.Model.Objects
       public ushort Port { get; set; }
       public Game Game { get; set; }
       public double UpTimeInPercent { get; set; }
-      public List<MonthStatistics> MonthStatisticsList { get; set; }
-      public Uri QCUri { get; set; }
+      public List<MonthStatistics> MonthStatisticsList { get; set; } = null!;
+      public Uri QcUri { get; set; } = null!;
+
       public ServerInfo()
       {
-
+      }
+      public ServerInfo(List<MonthStatistics> monthStatisticsList, Uri qcUri)
+      {
+         MonthStatisticsList = monthStatisticsList;
+         QcUri = qcUri;
       }
       public static List<ServerInfo> ReadAll()
       {
-         return DB_ServerInfo.ReadAll();
+         return DbServerInfo.ReadAll();
       }
       public static void Update(ServerInfo serverInfoObj)
       {
-         DB_ServerInfo.ChangeUpTime(serverInfoObj);
+         DbServerInfo.ChangeUpTime(serverInfoObj);
       }
       public static void CreateTable()
       {
-         DB_ServerInfo.CreateTable();
+         DbServerInfo.CreateTable();
       }
    }
 }

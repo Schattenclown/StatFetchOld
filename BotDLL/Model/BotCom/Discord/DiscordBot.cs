@@ -1,4 +1,5 @@
-﻿using BotDLL.Model.Objects;
+﻿using BotDLL.Model.BotCom.Discord.Interactions;
+using BotDLL.Model.Objects;
 using DisCatSharp;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.CommandsNext;
@@ -10,7 +11,6 @@ using DisCatSharp.Interactivity.EventHandling;
 using DisCatSharp.Interactivity.Extensions;
 using Microsoft.Extensions.Logging;
 using System.Text;
-using BotDLL.Model.BotCom.Discord.Interaction;
 using static BotDLL.Model.BotCom.Discord.Events.ApplicationCommandsEvents;
 using static BotDLL.Model.BotCom.Discord.Events.ClientEvents;
 using static BotDLL.Model.BotCom.Discord.Events.GuildEvents;
@@ -26,7 +26,7 @@ namespace BotDLL.Model.BotCom.Discord
    public class MultiDict<TKey, TValue>
    {
 #pragma warning disable CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
-      private readonly Dictionary<TKey, List<TValue>> _data = new Dictionary<TKey, List<TValue>>();
+      private readonly Dictionary<TKey, List<TValue>> _data = new();
 #pragma warning restore CS8714 // Der Typ kann nicht als Typparameter im generischen Typ oder in der generischen Methode verwendet werden. Die NULL-Zulässigkeit des Typarguments entspricht nicht der notnull-Einschränkung.
 
       /// <summary>
@@ -121,7 +121,7 @@ namespace BotDLL.Model.BotCom.Discord
 #pragma warning disable CS8601 // Mögliche Nullverweiszuweisung.
             token = connections.DiscordBotKey;
 #if DEBUG
-                token = connections.DiscordBotDebug;
+            token = connections.DiscordBotDebug;
 #endif
 #pragma warning restore CS8601 // Mögliche Nullverweiszuweisung.
             virgin = 69;
@@ -130,11 +130,11 @@ namespace BotDLL.Model.BotCom.Discord
 
          LogLevel logLevel;
 #if DEBUG
-            logLevel = LogLevel.Debug;
+         logLevel = LogLevel.Debug;
 #else
          logLevel = LogLevel.Error;
 #endif
-         var cfg = new DiscordConfiguration
+         DiscordConfiguration? cfg = new()
          {
             Token = token,
             TokenType = TokenType.Bot,
@@ -256,7 +256,7 @@ namespace BotDLL.Model.BotCom.Discord
          client.ApplicationCommandPermissionsUpdated += Client_ApplicationCommandPermissionsUpdated;
 
 #if DEBUG
-            client.UnknownEvent += Client_UnknownEvent;
+         client.UnknownEvent += Client_UnknownEvent;
 #endif
          ac.SlashCommandErrored += Ac_SlashCommandErrored;
          ac.SlashCommandExecuted += Ac_SlashCommandExecuted;
@@ -267,9 +267,9 @@ namespace BotDLL.Model.BotCom.Discord
 
       private void RegisterCommands(CommandsNextExtension cnext, ApplicationCommandsExtension appCommands)
       {
-         cnext.RegisterCommands<Discord.Interaction.Main>(); // Commands.Main = Ordner.Class
+         cnext.RegisterCommands<Main>(); // Commands.Main = Ordner.Class
 #if DEBUG
-            appCommands.RegisterGuildCommands<Discord.Interaction.Slash>(devguild); // use to register on guild
+         appCommands.RegisterGuildCommands<Slash>(devguild); // use to register on guild
 #else
          //appCommands.RegisterGuildCommands<Discord.Interaction.Slash>(881868642600505354);
          appCommands.RegisterGlobalCommands<Discord.Interaction.Slash>(); // use to register global (can take up to an hour)
@@ -284,7 +284,7 @@ namespace BotDLL.Model.BotCom.Discord
          {
             List<DCUserdata> dC_UserdataList = DCUserdata.ReadAll();
 
-            var differentchannel = new List<ulong>();
+            List<ulong>? differentchannel = new();
             bool once = false;
 
             DiscordEmbedBuilder discordEmbedBuilder = new()
@@ -346,8 +346,8 @@ namespace BotDLL.Model.BotCom.Discord
                         mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
                      else if (dC_UserdataItem.IsMinimalAbo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && isminimal)
                         mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
-                     else if (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version" ||
-                              dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status")
+                     else if ((dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "version") ||
+                              (dC_UserdataItem.Abo && dC_UserdataItem.ServerInfoId == serverStatObj.ServerInfoId && whatchanged == "status"))
                         mentions += $"<@{dC_UserdataItem.AuthorId}> \n";
                   }
                }
@@ -357,7 +357,7 @@ namespace BotDLL.Model.BotCom.Discord
                if (mentions != "" && mentions != " ")
                   discordEmbedBuilder.AddField(new DiscordEmbedField("Mentions", mentions));
 
-               var channel = await Client.GetChannelAsync(channelIdItem);
+               DiscordChannel? channel = await Client.GetChannelAsync(channelIdItem);
                if (channel != null && mentions != "")
                   await channel.SendMessageAsync(discordEmbedBuilder.Build());
 
