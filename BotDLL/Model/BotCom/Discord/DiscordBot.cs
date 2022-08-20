@@ -272,7 +272,7 @@ namespace BotDLL.Model.BotCom.Discord
          appCommands.RegisterGuildCommands<Slash>(devguild); // use to register on guild
 #else
          //appCommands.RegisterGuildCommands<Discord.Interaction.Slash>(881868642600505354);
-         appCommands.RegisterGlobalCommands<Discord.Interaction.Slash>(); // use to register global (can take up to an hour)
+         appCommands.RegisterGlobalCommands<Slash>(); // use to register global (can take up to an hour)
 #endif
       }
 
