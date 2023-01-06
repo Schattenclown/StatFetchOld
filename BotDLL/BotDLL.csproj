@@ -1,20 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DisCatSharp" Version="10.0.1-nightly-00426" />
-    <PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.0.1-nightly-00426" />
-    <PackageReference Include="DisCatSharp.CommandsNext" Version="10.0.1-nightly-00426" />
-    <PackageReference Include="DisCatSharp.Common" Version="10.0.1-nightly-00426" />
-    <PackageReference Include="DisCatSharp.Interactivity" Version="10.0.1-nightly-00426" />
-    <PackageReference Include="MineStat" Version="3.0.1" />
-    <PackageReference Include="MySql.Data" Version="8.0.30" />
-    <PackageReference Include="Okolni.Source.Query" Version="1.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DisCatSharp" Version="10.3.3-nightly-009" />
+		<PackageReference Include="DisCatSharp.ApplicationCommands" Version="10.3.3-nightly-009" />
+		<PackageReference Include="DisCatSharp.CommandsNext" Version="10.3.3-nightly-009" />
+		<PackageReference Include="DisCatSharp.Common" Version="10.3.3-nightly-009" />
+		<PackageReference Include="DisCatSharp.Interactivity" Version="10.3.3-nightly-009" />
+		<PackageReference Include="MineStat" Version="3.0.1" />
+		<PackageReference Include="MySql.Data" Version="8.0.31" />
+		<PackageReference Include="Okolni.Source.Query" Version="2.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Model\BotCom\Discord\AsyncFunctions\" />
+		<Folder Include="Model\BotCom\Discord\Interactions\" />
+	</ItemGroup>
 
 </Project>
