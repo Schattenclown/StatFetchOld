@@ -271,7 +271,7 @@ internal class Main : ApplicationCommandsModule
    ///    Show´s every Server with their informations
    /// </summary>
    /// <param name="interactionContext">The interaction context.</param>
-   [SlashCommand("42", "Show´s every Server with their informations", true)]
+   [SlashCommand("42", "Show´s every Server with their informations")]
    public static async Task ShowServerStatusAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(FourtytwoTypeChoiceProvider))] [Option("Type", "Type")] string fourtytwoChoice)
    {
       await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
