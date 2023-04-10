@@ -1,32 +1,33 @@
 ﻿using BotDLL.Persistence;
 
-namespace BotDLL.Model.Objects;
-
-public class UpTime
+namespace BotDLL.Model.Objects
 {
-   public ushort UpTimeId { get; set; }
-   public ushort ServerInfoId { get; set; }
-   public int Successful { get; set; }
-   public int Unsuccessful { get; set; }
-   public double InPercent { get; set; }
-
-   public static List<UpTime> ReadAll()
+   public class UpTime
    {
-      return DB_UpTime.ReadAll();
-   }
+      public ushort UpTimeId { get; set; }
+      public ushort ServerInfoId { get; set; }
+      public int Successful { get; set; }
+      public int Unsuccessful { get; set; }
+      public double InPercent { get; set; }
 
-   public static void Add(UpTime upTimeObj)
-   {
-      DB_UpTime.Add(upTimeObj);
-   }
+      public static List<UpTime> ReadAll()
+      {
+         return DB_UpTime.ReadAll();
+      }
 
-   public static void Change(UpTime upTimeObj)
-   {
-      DB_UpTime.Change(upTimeObj);
-   }
+      public static void Add(UpTime upTimeObj)
+      {
+         DB_UpTime.Add(upTimeObj);
+      }
 
-   public static void CreateTable()
-   {
-      DB_UpTime.CreateTable();
+      public static void Change(UpTime upTimeObj)
+      {
+         DB_UpTime.Change(upTimeObj);
+      }
+
+      public static void CreateTable()
+      {
+         DB_UpTime.CreateTable();
+      }
    }
 }

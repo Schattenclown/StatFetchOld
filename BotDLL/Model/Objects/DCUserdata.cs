@@ -1,38 +1,39 @@
 ﻿using BotDLL.Persistence;
 
-namespace BotDLL.Model.Objects;
-
-public class DCUserdata
+namespace BotDLL.Model.Objects
 {
-   public ushort DCUserdataID { get; set; }
-   public ushort ServerInfoId { get; set; }
-   public ulong AuthorId { get; set; }
-   public ulong ChannelId { get; set; }
-   public bool Abo { get; set; }
-   public bool IsMinimalAbo { get; set; }
-
-   public static List<DCUserdata> ReadAll()
+   public class DCUserData
    {
-      return DB_DCUserdata.ReadAll();
-   }
+      public ushort DCUserDataID { get; set; }
+      public ushort ServerInfoId { get; set; }
+      public ulong AuthorId { get; set; }
+      public ulong ChannelId { get; set; }
+      public bool Abo { get; set; }
+      public bool IsMinimalAbo { get; set; }
 
-   public override string ToString()
-   {
-      return "";
-   }
+      public static List<DCUserData> ReadAll()
+      {
+         return DB_DCUserdata.ReadAll();
+      }
 
-   public static void Add(DCUserdata dC_UserdataObj)
-   {
-      DB_DCUserdata.Add(dC_UserdataObj);
-   }
+      public override string ToString()
+      {
+         return "";
+      }
 
-   public static void Change(DCUserdata dC_UserdataObj)
-   {
-      DB_DCUserdata.Change(dC_UserdataObj);
-   }
+      public static void Add(DCUserData dCUserDataObj)
+      {
+         DB_DCUserdata.Add(dCUserDataObj);
+      }
 
-   public static void CreateTable()
-   {
-      DB_DCUserdata.CreateTable();
+      public static void Change(DCUserData dCUserDataObj)
+      {
+         DB_DCUserdata.Change(dCUserDataObj);
+      }
+
+      public static void CreateTable()
+      {
+         DB_DCUserdata.CreateTable();
+      }
    }
 }

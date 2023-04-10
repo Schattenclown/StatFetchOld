@@ -1,35 +1,41 @@
-﻿namespace BotDLL.Model.HelpClasses;
-
-/// <summary>
-///    Cuts a string until the word given with variation given with an integer
-/// </summary>
-public class WordCutter
+﻿namespace BotDLL.Model.HelpClasses
 {
    /// <summary>
-   ///    Removes until word.
+   ///    Cuts a string until the word given with variation given with an integer
    /// </summary>
-   /// <param name="inputstring">The string.</param>
-   /// <param name="word">The word.</param>
-   /// <param name="removewordint">The integer +/- from the word.</param>
-   /// <returns>A string.</returns>
-   public static string RemoveUntilWord(string inputstring, string word, int removewordint)
+   public class WordCutter
    {
-      return inputstring.Substring(inputstring.IndexOf(word) + removewordint);
-   }
+      /// <summary>
+      ///    Removes until word.
+      /// </summary>
+      /// <param name="inputString">The string.</param>
+      /// <param name="word">The word.</param>
+      /// <param name="removeWordInt">The integer +/- from the word.</param>
+      /// <returns>A string.</returns>
+      public static string? RemoveUntilWord(string? inputString, string word, int removeWordInt)
+      {
+         return inputString?[(inputString.IndexOf(word, StringComparison.Ordinal) + removeWordInt)..];
+      }
 
-   /// <summary>
-   ///    Removes the after word.
-   /// </summary>
-   /// <param name="inputstring">The string.</param>
-   /// <param name="word">The word.</param>
-   /// <param name="keepwordint">The integer +/- from the word.</param>
-   /// <returns>A string.</returns>
-   public static string RemoveAfterWord(string inputstring, string word, int keepwordint)
-   {
-      var index = inputstring.LastIndexOf(word);
-      if (index > 0)
-         inputstring = inputstring.Substring(0, index + keepwordint);
+      /// <summary>
+      ///    Removes the after word.
+      /// </summary>
+      /// <param name="inputString">The string.</param>
+      /// <param name="word">The word.</param>
+      /// <param name="keepWordInt">The integer +/- from the word.</param>
+      /// <returns>A string.</returns>
+      public static string? RemoveAfterWord(string? inputString, string word, int keepWordInt)
+      {
+         if (inputString != null)
+         {
+            int index = inputString.LastIndexOf(word, StringComparison.Ordinal);
+            if (index > 0)
+            {
+               inputString = inputString.Substring(0, index + keepWordInt);
+            }
+         }
 
-      return inputstring;
+         return inputString;
+      }
    }
 }

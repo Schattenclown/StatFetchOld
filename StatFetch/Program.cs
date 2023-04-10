@@ -1,284 +1,299 @@
 ﻿using BotDLL.Model.BotCom.Discord.Main;
 using BotDLL.Model.HelpClasses;
 using BotDLL.Model.Objects;
+using static System.Console;
 
-namespace StatFetch;
-
-public class Program
+namespace StatFetch
 {
-   private static Bot? discordBot;
-   private static List<ServerInfo> serverInfoList = new();
-   private static readonly List<ServerStat> serverStatListLive = new();
-   private static readonly List<ServerStat> serverStatCompareList0 = new();
-   private static readonly List<ServerStat> serverStatCompareList1 = new();
-   public static List<UpTime> upTimeList = new();
-
-   private static async Task Main()
+   public class Program
    {
-      try
+      private static Bot? _discordBot;
+      private static List<ServerInfo?> _serverInfoList = new();
+      private static readonly List<ServerStat> ServerStatListLive = new();
+      private static readonly List<ServerStat> ServerStatCompareList0 = new();
+      private static readonly List<ServerStat> ServerStatCompareList1 = new();
+      private static List<UpTime> _upTimeList = new();
+
+      private static async Task Main()
       {
-         await StartAsync();
-      }
-      catch (Exception ex)
-      {
-         Reset.RestartProgram(ex);
-      }
-   }
-
-   private static async Task StartAsync()
-   {
-      var counter = 0;
-
-      #region ConsoleSize
-
-      try
-      {
-#pragma warning disable CA1416 // Plattformkompatibilität überprüfen
-         Console.SetWindowSize(255, 40);
-      }
-      catch (Exception)
-      {
-         Console.SetWindowSize(100, 10);
-#pragma warning restore CA1416 // Plattformkompatibilität überprüfen
-      }
-
-      #endregion
-
-      ServerInfo.CreateTable();
-      UpTime.CreateTable();
-      DCUserdata.CreateTable();
-      serverInfoList = ServerInfo.ReadAll();
-      MonthStatistics.CreateTables(serverInfoList);
-      var upTimeCheckTask = UpTimeCheck();
-      var maxPlayerCheck = MaxPlayerCheck();
-
-      _ = Task.Run(async () =>
-      {
-         while (true)
-            try
-            {
-               serverStatListLive.Clear();
-               foreach (var serverInfoItem in serverInfoList)
-               {
-                  var serverStatObj = ServerStat.CreateObj(serverInfoItem);
-                  serverStatListLive.Add(serverStatObj);
-               }
-
-               if (counter % 2 == 0)
-               {
-                  serverStatCompareList0.Clear();
-                  serverStatCompareList0.AddRange(serverStatListLive);
-
-                  Console.ForegroundColor = ConsoleColor.White;
-                  ConsoleForamter.WriteStatList(serverStatListLive);
-                  Console.ForegroundColor = ConsoleColor.Gray;
-               }
-               else
-               {
-                  serverStatCompareList1.Clear();
-                  serverStatCompareList1.AddRange(serverStatListLive);
-
-                  ConsoleForamter.WriteStatList(serverStatListLive);
-               }
-
-               ChangeCheck();
-
-               if (counter == 60 / 5)
-               {
-                  serverInfoList = ServerInfo.ReadAll();
-                  counter = 0;
-               }
-
-               counter++;
-               await Task.Delay(1000 * 5);
-            }
-            catch (Exception ex)
-            {
-               Console.WriteLine(ex.Message);
-            }
-      });
-
-      discordBot = new Bot();
-      await discordBot.RunAsync();
-   }
-
-   private static void ChangeCheck()
-   {
-      foreach (var serverStatCompareItem0 in serverStatCompareList0)
-      foreach (var serverStatCompareItem1 in serverStatCompareList1)
-         if (serverStatCompareItem0.ServerInfoId == serverStatCompareItem1.ServerInfoId)
-            if (serverStatCompareItem0.ServerUp != serverStatCompareItem1.ServerUp || serverStatCompareItem0.Players != serverStatCompareItem1.Players)
-            {
-               if (serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime)
-               {
-                  Console.ForegroundColor = ConsoleColor.Red;
-                  ConsoleForamter.FillRow(1);
-                  ConsoleForamter.Center(serverStatCompareItem0.ToString());
-                  ConsoleForamter.FillRow(2);
-                  ConsoleForamter.Center(serverStatCompareItem1.ToString());
-                  ConsoleForamter.FillRow(3);
-                  Console.ForegroundColor = ConsoleColor.Gray;
-               }
-               else
-               {
-                  Console.ForegroundColor = ConsoleColor.Red;
-                  ConsoleForamter.FillRow(1);
-                  ConsoleForamter.Center(serverStatCompareItem1.ToString());
-                  ConsoleForamter.FillRow(2);
-                  ConsoleForamter.Center(serverStatCompareItem0.ToString());
-                  ConsoleForamter.FillRow(3);
-                  Console.ForegroundColor = ConsoleColor.Gray;
-               }
-
-
-               var isminimal = false;
-               if ((serverStatCompareItem0.Players == 1 && serverStatCompareItem1.Players == 0) || (serverStatCompareItem0.Players == 0 && serverStatCompareItem1.Players == 1))
-                  isminimal = true;
-
-               if (serverStatCompareItem0.ServerUp != serverStatCompareItem1.ServerUp)
-               {
-                  if (serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime)
-                     Bot.DCChange(serverStatCompareItem0, "status", isminimal);
-                  else
-                     Bot.DCChange(serverStatCompareItem1, "status", isminimal);
-               }
-               else if (serverStatCompareItem0.Players != serverStatCompareItem1.Players)
-               {
-                  if (serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime)
-                     Bot.DCChange(serverStatCompareItem0, "player", isminimal);
-                  else
-                     Bot.DCChange(serverStatCompareItem1, "player", isminimal);
-               }
-            }
-   }
-
-   public static async Task UpTimeCheck()
-   {
-      List<ServerInfo> serverInfoListUpTime = new();
-      List<ServerStat> serverStatListUpTime = new();
-
-      await Task.Run(async () =>
-      {
-         while (true)
+         try
          {
-            try
+            await StartAsync();
+         }
+         catch (Exception ex)
+         {
+            Reset.RestartProgram(ex);
+         }
+      }
+
+      private static async Task StartAsync()
+      {
+         int counter = 0;
+
+         #region ConsoleSize
+
+         try
+         {
+            if (OperatingSystem.IsWindows())
             {
-               while (DateTime.Now.Second != 59) await Task.Delay(500);
+               SetWindowSize(225, 30);
+            }
+         }
+         catch (Exception)
+         {
+            if (OperatingSystem.IsWindows())
+            {
+               SetWindowSize(100, 10);
+            }
+         }
 
-               Console.ForegroundColor = ConsoleColor.Red;
-               ConsoleForamter.FillRow(1);
-               Console.ForegroundColor = ConsoleColor.Yellow;
-               ConsoleForamter.FillRow(3);
-               Console.ForegroundColor = ConsoleColor.Gray;
+         #endregion
 
-               serverInfoListUpTime = ServerInfo.ReadAll();
-               upTimeList = UpTime.ReadAll();
+         ServerInfo.CreateTable();
+         UpTime.CreateTable();
+         DCUserData.CreateTable();
+         _serverInfoList = ServerInfo.ReadAll();
+         MonthStatistics.CreateTables(_serverInfoList);
+         UpTimeCheck();
+         MaxPlayerCheck();
 
-               serverStatListUpTime.Clear();
-               foreach (var serverInfoItem in serverInfoListUpTime)
+         _ = Task.Run(async () =>
+         {
+            while (true)
+            {
+               try
                {
-                  var serverStatObj = ServerStat.CreateObj(serverInfoItem);
-                  serverStatListUpTime.Add(serverStatObj);
-               }
-
-               foreach (var serverStatItem in serverStatListUpTime)
-               {
-                  var found = false;
-                  foreach (var upTimeItem in upTimeList)
-                     if (upTimeItem.ServerInfoId == serverStatItem.ServerInfoId)
-                        found = true;
-
-                  if (!found)
+                  ServerStatListLive.Clear();
+                  foreach (ServerStat serverStatObj in _serverInfoList.Select(ServerStat.CreateObj))
                   {
-                     UpTime upTime = new() { ServerInfoId = serverStatItem.ServerInfoId, Successful = 0, Unsuccessful = 0, InPercent = 0 };
+                     ServerStatListLive.Add(serverStatObj);
+                  }
+
+                  if (counter % 2 == 0)
+                  {
+                     ServerStatCompareList0.Clear();
+                     ServerStatCompareList0.AddRange(ServerStatListLive);
+
+                     ForegroundColor = ConsoleColor.White;
+                     ConsoleFormatter.WriteStatList(ServerStatListLive);
+                     ForegroundColor = ConsoleColor.Gray;
+                  }
+                  else
+                  {
+                     ServerStatCompareList1.Clear();
+                     ServerStatCompareList1.AddRange(ServerStatListLive);
+
+                     ConsoleFormatter.WriteStatList(ServerStatListLive);
+                  }
+
+                  ChangeCheck();
+
+                  if (counter == 60 / 5)
+                  {
+                     _serverInfoList = ServerInfo.ReadAll();
+                     counter = 0;
+                  }
+
+                  counter++;
+                  await Task.Delay(1000 * 5);
+               }
+               catch (Exception ex)
+               {
+                  WriteLine(ex.Message);
+               }
+            }
+         });
+
+         _discordBot = new Bot();
+         await _discordBot.RunAsync();
+      }
+
+      private static void ChangeCheck()
+      {
+         foreach (ServerStat serverStatCompareItem0 in ServerStatCompareList0)
+         foreach (ServerStat serverStatCompareItem1 in ServerStatCompareList1.Where(serverStatCompareItem1 => serverStatCompareItem0.ServerInfoId == serverStatCompareItem1.ServerInfoId).Where(serverStatCompareItem1 => serverStatCompareItem0.ServerUp != serverStatCompareItem1.ServerUp || serverStatCompareItem0.Players != serverStatCompareItem1.Players))
+         {
+            if (serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime)
+            {
+               ForegroundColor = ConsoleColor.Red;
+               ConsoleFormatter.FillRow(1);
+               ConsoleFormatter.Center(serverStatCompareItem0.ToString());
+               ConsoleFormatter.Center(serverStatCompareItem1.ToString());
+               ConsoleFormatter.FillRow(3);
+               ForegroundColor = ConsoleColor.Gray;
+            }
+            else
+            {
+               ForegroundColor = ConsoleColor.Red;
+               ConsoleFormatter.FillRow(1);
+               ConsoleFormatter.Center(serverStatCompareItem1.ToString());
+               ConsoleFormatter.Center(serverStatCompareItem0.ToString());
+               ConsoleFormatter.FillRow(3);
+               ForegroundColor = ConsoleColor.Gray;
+            }
+
+
+            bool isMinimal = (serverStatCompareItem0.Players == 1 && serverStatCompareItem1.Players == 0) || (serverStatCompareItem0.Players == 0 && serverStatCompareItem1.Players == 1);
+
+            if (serverStatCompareItem0.ServerUp != serverStatCompareItem1.ServerUp)
+            {
+               Bot.DC_Change(serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime ? serverStatCompareItem0 : serverStatCompareItem1, "status", isMinimal);
+            }
+            else if (serverStatCompareItem0.Players != serverStatCompareItem1.Players)
+            {
+               Bot.DC_Change(serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime ? serverStatCompareItem0 : serverStatCompareItem1, "player", isMinimal);
+            }
+         }
+      }
+
+      public static void UpTimeCheck()
+      {
+         List<ServerInfo?> serverInfoListUpTime;
+         List<ServerStat> serverStatListUpTime = new();
+
+         _ = Task.Run(async () =>
+         {
+            while (true)
+            {
+               try
+               {
+                  while (DateTime.Now.Second != 59)
+                  {
+                     await Task.Delay(500);
+                  }
+
+                  ForegroundColor = ConsoleColor.Red;
+                  ConsoleFormatter.FillRow(1);
+                  ForegroundColor = ConsoleColor.Yellow;
+                  ConsoleFormatter.FillRow(3);
+                  ForegroundColor = ConsoleColor.Gray;
+
+                  serverInfoListUpTime = ServerInfo.ReadAll();
+                  _upTimeList = UpTime.ReadAll();
+
+                  serverStatListUpTime.Clear();
+                  serverStatListUpTime.AddRange(serverInfoListUpTime.Select(ServerStat.CreateObj));
+
+                  foreach (ServerStat serverStatItem in serverStatListUpTime)
+                  {
+                     bool found = false;
+                     foreach (UpTime dummy in _upTimeList.Where(upTimeItem => upTimeItem.ServerInfoId == serverStatItem.ServerInfoId))
+                     {
+                        found = true;
+                     }
+
+                     if (found)
+                     {
+                        continue;
+                     }
+
+                     UpTime upTime = new()
+                     {
+                        ServerInfoId = serverStatItem.ServerInfoId,
+                        Successful = 0,
+                        Unsuccessful = 0,
+                        InPercent = 0
+                     };
                      UpTime.Add(upTime);
                   }
+
+                  foreach (ServerStat serverStatItem in serverStatListUpTime)
+                  foreach (UpTime upTimeItem in _upTimeList)
+                  {
+                     if (upTimeItem.ServerInfoId == serverStatItem.ServerInfoId && serverStatItem.ServerUp)
+                     {
+                        upTimeItem.Successful++;
+                        upTimeItem.InPercent = upTimeItem.Unsuccessful == 0 ? 100.0 : Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
+                        serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
+                        UpTime.Change(upTimeItem);
+                     }
+                     else if (upTimeItem.ServerInfoId == serverStatItem.ServerInfoId && !serverStatItem.ServerUp)
+                     {
+                        upTimeItem.Unsuccessful++;
+                        upTimeItem.InPercent = upTimeItem.Successful == 0 ? 0.0 : Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
+                        serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
+                        UpTime.Change(upTimeItem);
+                     }
+                  }
+
+                  foreach (ServerInfo? serverInfoItem in serverInfoListUpTime)
+                  foreach (ServerStat serverStatItem in serverStatListUpTime.Where(serverStatItem => serverInfoItem != null && serverStatItem.ServerInfoId == serverInfoItem.ServerInfoId))
+                  {
+                     if (serverInfoItem != null)
+                     {
+                        serverInfoItem.UpTimeInPercent = serverStatItem.UpTimeInPercent;
+                        ServerInfo.Update(serverInfoItem);
+                     }
+                  }
+               }
+               catch
+               {
+                  //ignored
                }
 
-               foreach (var serverStatItem in serverStatListUpTime)
-               foreach (var upTimeItem in upTimeList)
-                  if (upTimeItem.ServerInfoId == serverStatItem.ServerInfoId && serverStatItem.ServerUp)
-                  {
-                     upTimeItem.Successful++;
-                     if (upTimeItem.Unsuccessful == 0)
-                        upTimeItem.InPercent = 100.0;
-                     else
-                        upTimeItem.InPercent = Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
-                     serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
-                     UpTime.Change(upTimeItem);
-                  }
-                  else if (upTimeItem.ServerInfoId == serverStatItem.ServerInfoId && !serverStatItem.ServerUp)
-                  {
-                     upTimeItem.Unsuccessful++;
-                     if (upTimeItem.Successful == 0)
-                        upTimeItem.InPercent = 0.0;
-                     else
-                        upTimeItem.InPercent = Math.Round(Convert.ToDouble(upTimeItem.Successful) / Convert.ToDouble(upTimeItem.Successful + upTimeItem.Unsuccessful) * 100, 2);
-                     serverStatItem.UpTimeInPercent = upTimeItem.InPercent;
-                     UpTime.Change(upTimeItem);
-                  }
-
-               foreach (var serverInfoItem in serverInfoListUpTime)
-               foreach (var serverStatItem in serverStatListUpTime)
-                  if (serverStatItem.ServerInfoId == serverInfoItem.ServerInfoId)
-                  {
-                     serverInfoItem.UpTimeInPercent = serverStatItem.UpTimeInPercent;
-                     ServerInfo.Update(serverInfoItem);
-                  }
+               await Task.Delay(1000);
             }
-            catch
-            {
-               //ignored
-            }
+         });
+      }
 
-            await Task.Delay(1000);
-         }
-      });
-   }
-
-   public static async Task MaxPlayerCheck()
-   {
-      List<ServerInfo> serverInfoListMaxPlayer = new();
-      List<ServerInfo> serverInfoListWithMS = new();
-
-      await Task.Run(async () =>
+      public static void MaxPlayerCheck()
       {
-         while (true)
+         List<ServerInfo?> serverInfoListMaxPlayer;
+         List<ServerInfo?> serverInfoListWithMs;
+
+         _ = Task.Run(async () =>
          {
-            while (DateTime.Now.Second != 29) await Task.Delay(500);
-
-            Console.ForegroundColor = ConsoleColor.Blue;
-            ConsoleForamter.FillRow(1);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            ConsoleForamter.FillRow(3);
-            Console.ForegroundColor = ConsoleColor.Gray;
-
-            serverInfoListMaxPlayer = ServerInfo.ReadAll();
-            serverInfoListWithMS = MonthStatistics.ReadAll(serverInfoListMaxPlayer);
-
-            foreach (var serverInfoItem in serverInfoListWithMS)
+            while (true)
             {
-               var todayFound = false;
+               while (DateTime.Now.Second != 29)
+               {
+                  await Task.Delay(500);
+               }
 
-               foreach (var monthStatisticsItem in serverInfoItem.MonthStatisticsList)
-                  if (monthStatisticsItem.Date.Date == DateTime.Now.Date)
+               ForegroundColor = ConsoleColor.Blue;
+               ConsoleFormatter.FillRow(1);
+               ForegroundColor = ConsoleColor.Yellow;
+               ConsoleFormatter.FillRow(3);
+               ForegroundColor = ConsoleColor.Gray;
+
+               serverInfoListMaxPlayer = ServerInfo.ReadAll();
+               serverInfoListWithMs = MonthStatistics.ReadAll(serverInfoListMaxPlayer);
+
+               foreach (ServerInfo? serverInfoItem in serverInfoListWithMs)
+               {
+                  bool todayFound = false;
+
+                  foreach (MonthStatistics monthStatisticsItem in serverInfoItem?.MonthStatisticsList!)
                   {
-                     var serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                     if (monthStatisticsItem.Date.Date != DateTime.Now.Date)
+                     {
+                        continue;
+                     }
+
+                     ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
                      if (serverStatObj.Players > monthStatisticsItem.MaxPlayers)
+                     {
                         MonthStatistics.Change(serverStatObj);
+                     }
 
                      todayFound = true;
                   }
 
-               if (!todayFound)
-               {
-                  var serverStatObj = ServerStat.CreateObj(serverInfoItem);
-                  MonthStatistics.Add(serverStatObj);
-               }
-            }
 
-            await Task.Delay(1000);
-         }
-      });
+                  if (todayFound)
+                  {
+                     continue;
+                  }
+
+                  {
+                     ServerStat serverStatObj = ServerStat.CreateObj(serverInfoItem);
+                     MonthStatistics.Add(serverStatObj);
+                  }
+               }
+
+               await Task.Delay(1000);
+            }
+         });
+      }
    }
 }
