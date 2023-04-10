@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using BotDLL.Model.BotCom.Discord.Main;
 using MineStatLib;
 using Okolni.Source.Query;
 
@@ -114,6 +115,11 @@ public class ServerStat
 
    public override string ToString()
    {
-      return $"██ {ServerInfoId,5} ██ {Name,-10} ██ {DynDnsAddress,-15} ██ {Address,15}:{Port,-5} ██ {Players,3}/{MaxPlayers,-5} ██ {ServerUp,-5} ██ {Version,12} ██ {Map,-20} ██ {Game,-35} ██ {GameID,15} ██ {UpTimeInPercent,5}% ██ {FetchTime,21} ██";
+      return $"╠ {ServerInfoId,5} ╣╠ {Name,-10} ╣╠ {DynDnsAddress,-15} ╣╠ {Address,15}:{Port,-5} ╣╠ {Players,3}/{MaxPlayers,-5} ╣╠ {ServerUp,-5} ╣╠ {Version,12} ╣╠ {Map,-20} ╣╠ {Game,-35} ╣╠ {GameID,15} ╣╠ {UpTimeInPercent,6}% ╣╠ {FetchTime,21} ╣";
+
+      Bot.counter++;
+      if (Bot.counter % 2 == 0)
+         return $"╠ {ServerInfoId,5} ╔╝ {Name,-10} ╔╝ {DynDnsAddress,-15} ╔╝ {Address,15}:{Port,-5} ╔╝ {Players,3}/{MaxPlayers,-5} ╔╝ {ServerUp,-5} ╔╝ {Version,12} ╔╝ {Map,-20} ╔╝ {Game,-35} ╔╝ {GameID,15} ╔╝ {UpTimeInPercent,6}% ╔╝ {FetchTime,21} ╣";
+      return $"╠ {ServerInfoId,5} ╚╗ {Name,-10} ╚╗ {DynDnsAddress,-15} ╚╗ {Address,15}:{Port,-5} ╚╗ {Players,3}/{MaxPlayers,-5} ╚╗ {ServerUp,-5} ╚╗ {Version,12} ╚╗ {Map,-20} ╚╗ {Game,-35} ╚╗ {GameID,15} ╚╗ {UpTimeInPercent,6}% ╚╗ {FetchTime,21} ╣";
    }
 }

@@ -21,6 +21,8 @@ public class Bot : IDisposable
 #else
    public const string Prefix = "%";
 #endif
+
+   public static int counter = 0;
    public static readonly Connections Connections = Connections.GetConnections();
    public static CancellationTokenSource ShutdownRequest;
    public static DiscordClient DiscordClient;
@@ -53,7 +55,7 @@ public class Bot : IDisposable
 #if DEBUG
       const LogLevel logLevel = LogLevel.Debug;
 #else
-      const LogLevel logLevel = LogLevel.Debug;
+      const LogLevel logLevel = LogLevel.None;
 #endif
       DiscordConfiguration discordConfiguration = new()
       {

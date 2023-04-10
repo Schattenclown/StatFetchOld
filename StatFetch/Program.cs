@@ -112,21 +112,21 @@ public class Program
                if (serverStatCompareItem0.FetchTime > serverStatCompareItem1.FetchTime)
                {
                   Console.ForegroundColor = ConsoleColor.Red;
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(1);
                   ConsoleForamter.Center(serverStatCompareItem0.ToString());
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(2);
                   ConsoleForamter.Center(serverStatCompareItem1.ToString());
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(3);
                   Console.ForegroundColor = ConsoleColor.Gray;
                }
                else
                {
                   Console.ForegroundColor = ConsoleColor.Red;
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(1);
                   ConsoleForamter.Center(serverStatCompareItem1.ToString());
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(2);
                   ConsoleForamter.Center(serverStatCompareItem0.ToString());
-                  ConsoleForamter.FillRow();
+                  ConsoleForamter.FillRow(3);
                   Console.ForegroundColor = ConsoleColor.Gray;
                }
 
@@ -166,9 +166,9 @@ public class Program
                while (DateTime.Now.Second != 59) await Task.Delay(500);
 
                Console.ForegroundColor = ConsoleColor.Red;
-               ConsoleForamter.FillRow();
+               ConsoleForamter.FillRow(1);
                Console.ForegroundColor = ConsoleColor.Yellow;
-               ConsoleForamter.FillRow();
+               ConsoleForamter.FillRow(3);
                Console.ForegroundColor = ConsoleColor.Gray;
 
                serverInfoListUpTime = ServerInfo.ReadAll();
@@ -248,9 +248,9 @@ public class Program
             while (DateTime.Now.Second != 29) await Task.Delay(500);
 
             Console.ForegroundColor = ConsoleColor.Blue;
-            ConsoleForamter.FillRow();
+            ConsoleForamter.FillRow(1);
             Console.ForegroundColor = ConsoleColor.Yellow;
-            ConsoleForamter.FillRow();
+            ConsoleForamter.FillRow(3);
             Console.ForegroundColor = ConsoleColor.Gray;
 
             serverInfoListMaxPlayer = ServerInfo.ReadAll();

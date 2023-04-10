@@ -10,13 +10,15 @@ public class ConsoleForamter
    /// <param name="centerString">The text.</param>
    public static void Center(string centerString)
    {
+      //╔ ═ v ╣╠ ╝╚ ╣ ╠
+
       try
       {
-         Console.Write("██");
+         Console.Write("");
          Console.SetCursorPosition((Console.WindowWidth - centerString.Length) / 2, Console.CursorTop);
          Console.Write(centerString);
          Console.SetCursorPosition(Console.WindowWidth - 4, Console.CursorTop);
-         Console.WriteLine("██");
+         Console.WriteLine("");
       }
       catch
       {
@@ -24,26 +26,44 @@ public class ConsoleForamter
          Console.SetCursorPosition((Console.WindowWidth - centerString.Length) / 2, Console.CursorTop);
          Console.Write(centerString);
          Console.SetCursorPosition(Console.WindowWidth - 4, Console.CursorTop);
-         Console.WriteLine("██");
+         Console.WriteLine("");
       }
    }
 
-   public static void FillRow()
+   public static void FillRow(int topMiddleBottom)
    {
-      Console.WriteLine($"{"".PadRight(Console.WindowWidth - 2, '█')}");
+      if (topMiddleBottom == 1)
+      {
+         Center($"╔═{"═".PadLeft(5, '═')}═╗╔═{"═".PadLeft(10, '═')}═╗╔═{"═".PadLeft(15, '═')}═╗╔═{"═".PadLeft(15, '═')}═{"═".PadLeft(5, '═')}═╗╔═{"═".PadLeft(3, '═')}═{"═".PadLeft(5, '═')}═╗╔═{"═".PadLeft(5, '═')}═╗╔═{"═".PadLeft(12, '═')}═╗╔═{"═".PadLeft(20, '═')}═╗╔═{"═".PadLeft(35, '═')}═╗╔═{"═".PadLeft(15, '═')}═╗╔═{"═".PadLeft(6, '═')}══╗╔═{"═".PadLeft(21, '═')}═╗");
+      }
+      else if (topMiddleBottom == 2)
+      {
+         Center($"╠═{"═".PadLeft(5, '═')}═╣╠═{"═".PadLeft(10, '═')}═╣╠═{"═".PadLeft(15, '═')}═╣╠═{"═".PadLeft(15, '═')}═{"═".PadLeft(5, '═')}═╣╠═{"═".PadLeft(3, '═')}═{"═".PadLeft(5, '═')}═╣╠═{"═".PadLeft(5, '═')}═╣╠═{"═".PadLeft(12, '═')}═╣╠═{"═".PadLeft(20, '═')}═╣╠═{"═".PadLeft(35, '═')}═╣╠═{"═".PadLeft(15, '═')}═╣╠═{"═".PadLeft(6, '═')}══╣╠═{"═".PadLeft(21, '═')}═╣");
+      }
+      else if (topMiddleBottom == 3)
+      {
+         Center($"╚═{"═".PadLeft(5, '═')}═╝╚═{"═".PadLeft(10, '═')}═╝╚═{"═".PadLeft(15, '═')}═╝╚═{"═".PadLeft(15, '═')}═{"═".PadLeft(5, '═')}═╝╚═{"═".PadLeft(3, '═')}═{"═".PadLeft(5, '═')}═╝╚═{"═".PadLeft(5, '═')}═╝╚═{"═".PadLeft(12, '═')}═╝╚═{"═".PadLeft(20, '═')}═╝╚═{"═".PadLeft(35, '═')}═╝╚═{"═".PadLeft(15, '═')}═╝╚═{"═".PadLeft(6, '═')}══╝╚═{"═".PadLeft(21, '═')}═╝");
+      }
    }
 
    public static void WriteStatList(List<ServerStat> serverStatList)
    {
       try
       {
-         FillRow();
-         Center($"██ {"Id",5} ██ {"Name",-10} ██ {"DynDnsAddress",-15} ██ {"Address",15}:{"Port",-5} ██ {"pL",3}/{"MpL",-5} ██ {"IsUp",-5} ██ {"Version",12} ██ {"Map",-20} ██ {"Game",-35} ██ {"GameID",15} ██ {"uTime",5}% ██ {"FetchTime",21} ██");
-         FillRow();
+         int counter = 0;
+         FillRow(1);
+         Center($"╠ {"Id",5} ╣╠ {"Name",-10} ╣╠ {"DynDnsAddress",-15} ╣╠ {"Address",15}:{"Port",-5} ╣╠ {"pL",3}/{"MpL",-5} ╣╠ {"IsUp",-5} ╣╠ {"Version",12} ╣╠ {"Map",-20} ╣╠ {"Game",-35} ╣╠ {"GameID",15} ╣╠ {"uT",6}% ╣╠ {"FetchTime",21} ╣");
+         FillRow(2);
          foreach (var serverStatObjItem in serverStatList)
          {
             if (serverStatObjItem.ServerUp)
-               Console.ForegroundColor = ConsoleColor.Green;
+            {
+               if(counter % 2 == 0)
+                  Console.ForegroundColor = ConsoleColor.Green;
+               else
+                  Console.ForegroundColor = ConsoleColor.DarkGreen;
+               counter++;
+            }
             else
                Console.ForegroundColor = ConsoleColor.Red;
 
@@ -51,7 +71,7 @@ public class ConsoleForamter
             Console.ForegroundColor = ConsoleColor.Gray;
          }
 
-         FillRow();
+         FillRow(3);
       }
       catch
       {
