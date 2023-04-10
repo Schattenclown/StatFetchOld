@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using BotDLL.Model.HelpClasses;
 using BotDLL.Model.Objects;
+using BotDLL.Persistence.MSSQL;
 using DisCatSharp;
 using DisCatSharp.ApplicationCommands;
 using DisCatSharp.ApplicationCommands.EventArgs;
@@ -192,7 +193,6 @@ namespace BotDLL.Model.BotCom.Discord.Main
                      {
                         if (serverStatObj.ServerUp)
                         {
-                           discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
                            discordEmbedBuilder.Color = DiscordColor.Green;
                         }
                         else
@@ -211,6 +211,19 @@ namespace BotDLL.Model.BotCom.Discord.Main
                   }
 
                   discordEmbedBuilder.AddField(new DiscordEmbedField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true));
+
+                  discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
+                  if (serverStatObj.Version != "")
+                  {
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatObj.Version}", true));
+                  }
+
+                  ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatObj.Port);
+                  if (serverUsageObj.RAMUsage != 0)
+                  {
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+                  }
 
                   once = true;
                }

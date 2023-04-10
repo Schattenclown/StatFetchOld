@@ -376,15 +376,24 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
                {
                   discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
                   discordEmbedBuilder.AddField(new DiscordEmbedField("Players", $"{serverStatItem.Players}/{serverStatItem.MaxPlayers}", true));
+                  if (serverStatItem.Version != "")
+                  {
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatItem.Version}", true));
+                  }
+
+                  ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatItem.Port);
+                  if (serverUsageObj.RAMUsage != 0)
+                  {
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+                  }
+
                   discordEmbedBuilder.Color = DiscordColor.Green;
-                  //buggy
-                  //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatItem.Version}", true);
                }
                else
                {
                   discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Offline", true));
-                  //buggy
-                  //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true);
+                  discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true));
                   discordEmbedBuilder.Color = DiscordColor.Red;
                   discordEmbedBuilder.AddField(new DiscordEmbedField("Players", "N/A", true));
                   discordEmbedBuilder.AddField(new DiscordEmbedField("UpTime", serverStatItem.UpTimeInPercent + "%", true));
@@ -417,7 +426,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
                else
                {
                   discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Offline", true));
-                  //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true);
+                  discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true));
                   discordEmbedBuilder.Color = DiscordColor.Red;
                }
 
@@ -425,7 +434,17 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
                {
                   if (serverStatItem.ServerUp)
                   {
-                     //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatItem.Version}", true);
+                     if (serverStatItem.Version != "")
+                     {
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatItem.Version}", true));
+                     }
+
+                     ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatItem.Port);
+                     if (serverUsageObj.RAMUsage != 0)
+                     {
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+                     }
                   }
                   else
                   {
@@ -601,16 +620,25 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
          {
             discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
             discordEmbedBuilder.AddField(new DiscordEmbedField("Players", $"{serverStatObj.Players}/{serverStatObj.MaxPlayers}", true));
-            //there is a bug somewhere
-            //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatObj.Version}", true);
+            if (serverStatObj.Version != "")
+            {
+               discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatObj.Version}", true));
+            }
+
+            ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatObj.Port);
+            if (serverUsageObj.RAMUsage != 0)
+            {
+               discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
+               discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+            }
+
             discordEmbedBuilder.Color = DiscordColor.Green;
          }
          else
          {
             discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Offline", true));
             discordEmbedBuilder.AddField(new DiscordEmbedField("Players", "N/A", true));
-            //there is a bug somewhere
-            //discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true);
+            discordEmbedBuilder.AddField(new DiscordEmbedField("Version", "N/A", true));
             discordEmbedBuilder.Color = DiscordColor.Red;
          }
 
