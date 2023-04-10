@@ -111,9 +111,9 @@ namespace BotDLL.Model.QuickCharts
                 ii++;
             }*/
 
-            labels.TrimEnd(',');
+            labels = labels.TrimEnd(',');
             data1 = data1.TrimEnd(',');
-            quickChartString += data1 + data2;
+            quickChartString += labels + data1 + data2;
             //Q1,Q2,Q3,Q4
             //50,40,30,20
 
