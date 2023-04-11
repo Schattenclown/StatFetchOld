@@ -604,10 +604,9 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             if (serverInfoObj != null)
             {
                serverInfoObj.QcUri = new Uri(qcUri.AbsoluteUri);
+               discordEmbedBuilder.ImageUrl = serverInfoObj.QcUri.AbsoluteUri;
             }
          }
-
-         discordEmbedBuilder.ImageUrl = serverInfoObj?.QcUri.AbsoluteUri;
 
          discordEmbedBuilder.AddField(new DiscordEmbedField("Name", $"{serverStatObj.Name}", true));
          discordEmbedBuilder.AddField(new DiscordEmbedField("Game", serverStatObj.Game, true));

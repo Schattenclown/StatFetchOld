@@ -49,7 +49,7 @@ namespace BotDLL.Persistence
       public static ServerInfo? Read(ServerInfo? serverInfoObj)
       {
          string serverInfoIdString = $"{serverInfoObj.ServerInfoId:#0000000}MonthStatistics";
-         string sqlCommand = $"SELECT * FROM {serverInfoIdString}";
+         string sqlCommand = $"SELECT * FROM {serverInfoIdString} order by date desc limit 60";
 
          MySqlConnection mySqlConnection = DB_Connection.OpenDB();
          MySqlDataReader mySqlDataReader = DB_Connection.ExecuteReader(sqlCommand, mySqlConnection);
