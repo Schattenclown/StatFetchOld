@@ -9,6 +9,8 @@ using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
+using Org.BouncyCastle.Asn1.Crmf;
+using System.Threading.Channels;
 
 namespace BotDLL.Model.BotCom.Discord.AppCommands
 {
@@ -223,7 +225,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
 
          foreach (DCUserData dCUserDataItem in dCUserDataListAboSorted)
          {
-            if (lastChannel == 0)
+            if (dCUserDataListAboSorted.FirstOrDefault() == dCUserDataItem)
             {
                lastChannel = dCUserDataItem.ChannelId;
             }
@@ -235,25 +237,13 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             {
                aboType = "MINIMAL";
             }
-
-
-            if (serverInfoName != null && !servers.Contains(serverInfoName))
-
+            
+            if (serverInfoName != null)
             {
-               servers += $"{aboType} - {serverInfoName}\n";
-            }
-
-            if (lastChannel != dCUserDataItem.ChannelId)
-            {
-               discordEmbedBuilder.AddField(new DiscordEmbedField(servers, "<#" + lastChannel + ">"));
-               servers = "";
-               servers += $"{aboType} - {serverInfoName}\n";
-               lastChannel = dCUserDataItem.ChannelId;
-            }
-
-            if (dCUserDataListAboSorted.Last() == dCUserDataItem)
-            {
-               discordEmbedBuilder.AddField(new DiscordEmbedField(servers, "<#" + lastChannel + ">"));
+               if (!discordEmbedBuilder.Fields.Any(x => x.Name.Contains(serverInfoName) && x.Value.Contains(dCUserDataItem.ChannelId.ToString())))
+               {
+                  discordEmbedBuilder.AddField(new DiscordEmbedField($"{aboType} - {serverInfoName}", "<#" + dCUserDataItem.ChannelId.ToString() + ">"));
+               }
             }
          }
 
@@ -594,16 +584,17 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             break;
          }
 
+         
          ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
 
          DiscordEmbedBuilder discordEmbedBuilder = new();
 
-         Uri? qcUri = QC_UriGenerator.CreateObj(serverInfoObj).QcUri;
-         if (qcUri != null)
+         string qcUriAbsoluteUri = QC_UriGenerator.CreateObj(serverInfoObj).QcUri?.AbsoluteUri;
+         if (qcUriAbsoluteUri != null)
          {
             if (serverInfoObj != null)
             {
-               serverInfoObj.QcUri = new Uri(qcUri.AbsoluteUri);
+               serverInfoObj.QcUri = new Uri(qcUriAbsoluteUri);
                discordEmbedBuilder.ImageUrl = serverInfoObj.QcUri.AbsoluteUri;
             }
          }
