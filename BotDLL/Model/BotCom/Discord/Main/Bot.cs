@@ -212,17 +212,20 @@ namespace BotDLL.Model.BotCom.Discord.Main
 
                   discordEmbedBuilder.AddField(new DiscordEmbedField("Ip address", $"{serverStatObj.DynDnsAddress}:{serverStatObj.Port}", true));
 
-                  discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
-                  if (serverStatObj.Version != "")
+                  if (serverStatObj.ServerUp)
                   {
-                     discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatObj.Version}", true));
-                  }
+                     discordEmbedBuilder.AddField(new DiscordEmbedField("ServerUp", "Online", true));
+                     if (serverStatObj.Version != "")
+                     {
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("Version", $"{serverStatObj.Version}", true));
+                     }
 
-                  ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatObj.Port);
-                  if (serverUsageObj.RAMUsage != 0)
-                  {
-                     discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
-                     discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+                     ServerUsageObj serverUsageObj = DataBaseConnection.Read(serverStatObj.Port);
+                     if (serverUsageObj.RAMUsage != 0)
+                     {
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("CPU usage", $"{serverUsageObj.CPUUsage} %", true));
+                        discordEmbedBuilder.AddField(new DiscordEmbedField("RAM usage", $"{serverUsageObj.RAMUsage} MB", true));
+                     }
                   }
 
                   once = true;
@@ -254,9 +257,9 @@ namespace BotDLL.Model.BotCom.Discord.Main
                   }
                }
 
-               if (discordEmbedBuilder.Fields.Count == 3)
+               if (discordEmbedBuilder.Fields.Any(x => x.Name == "Mentions"))
                {
-                  discordEmbedBuilder.RemoveFieldAt(2);
+                  discordEmbedBuilder.RemoveField(discordEmbedBuilder.Fields.First(x => x.Name == "Mentions"));
                }
 
                if (mentions != "" && mentions != " ")

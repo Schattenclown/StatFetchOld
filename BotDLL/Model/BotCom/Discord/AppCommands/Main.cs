@@ -266,7 +266,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
       /// <param name="interactionContext">The interaction context.</param>
       /// <param name="serverNameChoice"></param>
       /// <param name="testFunctionChoice"></param>
-      [SlashCommand("test", "Test´s the functionality of the DCChange [player, status, version]", true)]
+      [SlashCommand("test", "Test´s the functionality of the DCChange [player, status, version]")]
       public static async Task TestAsync(InteractionContext interactionContext, [ChoiceProvider(typeof(ServerNameChoiceProvider)), Option("Server", "test server")] string serverNameChoice, [ChoiceProvider(typeof(TestFunctionsChoiceProvider)), Option("Function", "function")] string testFunctionChoice)
       {
          await interactionContext.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
@@ -697,6 +697,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             if (serverName != null)
             {
                DiscordEmbedBuilder discordEmbedBuilder = ChangeSubscriptionCommand(serverName, interactionContext, true, isMinimal);
+               await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
                await interactionContext.FollowUpAsync(new DiscordFollowupMessageBuilder().AddEmbed(discordEmbedBuilder.Build()));
             }
          }
