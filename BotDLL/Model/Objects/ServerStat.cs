@@ -32,28 +32,28 @@ namespace BotDLL.Model.Objects
             MineStat mineStatObj = new(ip4Address.ToString(), serverInfoObj.Port, 1);
             serverStatObj = new ServerStat
             {
-               ServerInfoId = serverInfoObj.ServerInfoId,
-               Name = serverInfoObj.Name,
-               DynDnsAddress = serverInfoObj.DynDnsAddress,
-               Address = ip4Address,
-               Port = serverInfoObj.Port,
-               Players = mineStatObj.CurrentPlayersInt,
-               MaxPlayers = mineStatObj.MaximumPlayersInt,
-               ServerUp = mineStatObj.ServerUp,
-               Version = mineStatObj.Version,
-               Map = "Minecraft",
-               Game = "Minecraft",
-               GameID = 0,
-               FetchTime = DateTime.Now,
-               UpTimeInPercent = serverInfoObj.UpTimeInPercent
+                     ServerInfoId = serverInfoObj.ServerInfoId,
+                     Name = serverInfoObj.Name,
+                     DynDnsAddress = serverInfoObj.DynDnsAddress,
+                     Address = ip4Address,
+                     Port = serverInfoObj.Port,
+                     Players = mineStatObj.CurrentPlayersInt,
+                     MaxPlayers = mineStatObj.MaximumPlayersInt,
+                     ServerUp = mineStatObj.ServerUp,
+                     Version = mineStatObj.Version,
+                     Map = "Minecraft",
+                     Game = "Minecraft",
+                     GameID = 0,
+                     FetchTime = DateTime.Now,
+                     UpTimeInPercent = serverInfoObj.UpTimeInPercent
             };
          }
          else if (serverInfoObj?.Game! == Objects.Game.SourceGame)
          {
             IQueryConnection queryConnection = new QueryConnection
             {
-               Host = ip4Address.ToString(),
-               Port = serverInfoObj.Port
+                     Host = ip4Address.ToString(),
+                     Port = serverInfoObj.Port
             };
 
             try
@@ -62,20 +62,20 @@ namespace BotDLL.Model.Objects
                InfoResponse? infoResonanceObj = queryConnection.GetInfo();
                serverStatObj = new ServerStat
                {
-                  ServerInfoId = serverInfoObj.ServerInfoId,
-                  Name = serverInfoObj.Name,
-                  DynDnsAddress = serverInfoObj.DynDnsAddress,
-                  Address = ip4Address,
-                  Port = serverInfoObj.Port,
-                  Players = infoResonanceObj.Players,
-                  MaxPlayers = infoResonanceObj.MaxPlayers,
-                  ServerUp = true,
-                  Version = infoResonanceObj.Version,
-                  Map = infoResonanceObj.Map,
-                  Game = infoResonanceObj.Game,
-                  GameID = Convert.ToUInt32(infoResonanceObj.GameID),
-                  FetchTime = DateTime.Now,
-                  UpTimeInPercent = serverInfoObj.UpTimeInPercent
+                        ServerInfoId = serverInfoObj.ServerInfoId,
+                        Name = serverInfoObj.Name,
+                        DynDnsAddress = serverInfoObj.DynDnsAddress,
+                        Address = ip4Address,
+                        Port = serverInfoObj.Port,
+                        Players = infoResonanceObj.Players,
+                        MaxPlayers = infoResonanceObj.MaxPlayers,
+                        ServerUp = true,
+                        Version = infoResonanceObj.Version,
+                        Map = infoResonanceObj.Map,
+                        Game = infoResonanceObj.Game,
+                        GameID = Convert.ToUInt32(infoResonanceObj.GameID),
+                        FetchTime = DateTime.Now,
+                        UpTimeInPercent = serverInfoObj.UpTimeInPercent
                };
                infoResonanceObj.Map ??= "Unknown";
 
@@ -88,15 +88,15 @@ namespace BotDLL.Model.Objects
             {
                serverStatObj = new ServerStat
                {
-                  ServerInfoId = serverInfoObj.ServerInfoId,
-                  Name = serverInfoObj.Name,
-                  DynDnsAddress = serverInfoObj.DynDnsAddress,
-                  Address = ip4Address,
-                  Port = serverInfoObj.Port,
-                  ServerUp = false,
-                  Game = serverInfoObj.Game.ToString(),
-                  FetchTime = DateTime.Now,
-                  UpTimeInPercent = serverInfoObj.UpTimeInPercent
+                        ServerInfoId = serverInfoObj.ServerInfoId,
+                        Name = serverInfoObj.Name,
+                        DynDnsAddress = serverInfoObj.DynDnsAddress,
+                        Address = ip4Address,
+                        Port = serverInfoObj.Port,
+                        ServerUp = false,
+                        Game = serverInfoObj.Game.ToString(),
+                        FetchTime = DateTime.Now,
+                        UpTimeInPercent = serverInfoObj.UpTimeInPercent
                };
             }
          }

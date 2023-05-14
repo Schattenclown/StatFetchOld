@@ -58,52 +58,52 @@ namespace BotDLL.Model.BotCom.Discord.Main
 
          DiscordConfiguration discordConfiguration = new()
          {
-            Token = token,
-            TokenType = TokenType.Bot,
-            AutoReconnect = true,
-            MessageCacheSize = 4096,
-            MinimumLogLevel = logLevel,
-            ShardCount = 1,
-            ShardId = 0,
-            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers | DiscordIntents.GuildPresences,
-            MobileStatus = false,
-            UseCanary = true,
-            UsePtb = false,
-            AutoRefreshChannelCache = false,
-            HttpTimeout = TimeSpan.FromSeconds(60),
-            ReconnectIndefinitely = true
+                  Token = token,
+                  TokenType = TokenType.Bot,
+                  AutoReconnect = true,
+                  MessageCacheSize = 4096,
+                  MinimumLogLevel = logLevel,
+                  ShardCount = 1,
+                  ShardId = 0,
+                  Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers | DiscordIntents.GuildPresences,
+                  MobileStatus = false,
+                  UseCanary = true,
+                  UsePtb = false,
+                  AutoRefreshChannelCache = false,
+                  HttpTimeout = TimeSpan.FromSeconds(60),
+                  ReconnectIndefinitely = true
          };
 
          Client = new DiscordClient(discordConfiguration);
 
          _appCommands = Client.UseApplicationCommands(new ApplicationCommandsConfiguration
          {
-            EnableDefaultHelp = true,
-            DebugStartup = true,
-            ManualOverride = true,
-            CheckAllGuilds = true
+                  EnableDefaultHelp = true,
+                  DebugStartup = true,
+                  ManualOverride = true,
+                  CheckAllGuilds = true
          });
 
          _commandsNextExtension = Client.UseCommandsNext(new CommandsNextConfiguration
          {
-            StringPrefixes = new List<string>
-            {
-               Prefix
-            },
-            CaseSensitive = true,
-            EnableMentionPrefix = true,
-            IgnoreExtraArguments = true,
-            DefaultHelpChecks = null,
-            EnableDefaultHelp = true,
-            EnableDms = true
+                  StringPrefixes = new List<string>
+                  {
+                           Prefix
+                  },
+                  CaseSensitive = true,
+                  EnableMentionPrefix = true,
+                  IgnoreExtraArguments = true,
+                  DefaultHelpChecks = null,
+                  EnableDefaultHelp = true,
+                  EnableDms = true
          });
 
          Extension = Client.UseInteractivity(new InteractivityConfiguration
          {
-            PaginationBehaviour = PaginationBehaviour.WrapAround,
-            PaginationDeletion = PaginationDeletion.DeleteMessage,
-            PollBehaviour = PollBehaviour.DeleteEmojis,
-            ButtonBehavior = ButtonPaginationBehavior.Disable
+                  PaginationBehaviour = PaginationBehaviour.WrapAround,
+                  PaginationDeletion = PaginationDeletion.DeleteMessage,
+                  PollBehaviour = PollBehaviour.DeleteEmojis,
+                  ButtonBehavior = ButtonPaginationBehavior.Disable
          });
 
          RegisterEventListener(Client, _appCommands, _commandsNextExtension);
@@ -150,7 +150,7 @@ namespace BotDLL.Model.BotCom.Discord.Main
 
          while (_shutdownRequest is
                 {
-                   IsCancellationRequested: false
+                         IsCancellationRequested: false
                 })
          {
             await Task.Delay(2000);
@@ -173,7 +173,7 @@ namespace BotDLL.Model.BotCom.Discord.Main
 
             DiscordEmbedBuilder discordEmbedBuilder = new()
             {
-               Color = new DiscordColor(255, 0, 255)
+                     Color = new DiscordColor(255, 0, 255)
             };
             discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
             discordEmbedBuilder.WithFooter("(✿◠‿◠) thanks for using me");
@@ -358,8 +358,8 @@ namespace BotDLL.Model.BotCom.Discord.Main
 
          DiscordActivity discordActivity = new()
          {
-            Name = Custom ? CustomState : "/help",
-            ActivityType = ActivityType.Competing
+                  Name = Custom ? CustomState : "/help",
+                  ActivityType = ActivityType.Competing
          };
          discordClient.UpdateStatusAsync(discordActivity, Custom ? CustomStatus : UserStatus.Online);
          CwLogger.Write("Bot ready!", declaringTypeName, ConsoleColor.Green);

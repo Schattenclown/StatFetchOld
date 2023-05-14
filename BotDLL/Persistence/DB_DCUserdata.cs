@@ -17,12 +17,12 @@ namespace BotDLL.Persistence
          {
             DCUserData dCUserDataObj = new()
             {
-               DCUserDataID = mySqlDataReader.GetUInt16("DCUserDataID"),
-               ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
-               AuthorId = mySqlDataReader.GetUInt64("AuthorId"),
-               ChannelId = mySqlDataReader.GetUInt64("ChannelId"),
-               Abo = mySqlDataReader.GetBoolean("Abo"),
-               IsMinimalAbo = mySqlDataReader.GetBoolean("IsMinimalAbo")
+                     DCUserDataID = mySqlDataReader.GetUInt16("DCUserDataID"),
+                     ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
+                     AuthorId = mySqlDataReader.GetUInt64("AuthorId"),
+                     ChannelId = mySqlDataReader.GetUInt64("ChannelId"),
+                     Abo = mySqlDataReader.GetBoolean("Abo"),
+                     IsMinimalAbo = mySqlDataReader.GetBoolean("IsMinimalAbo")
             };
             dC_UserdataList.Add(dCUserDataObj);
          }

@@ -35,7 +35,7 @@ namespace BotDLL.Model.QuickCharts
             string data2 = "&data2=";
 
             int ii = 0;
-            
+
             List<string> labelsList = new();
             List<int> data1List = new();
             List<int> data2List = new();
@@ -50,8 +50,6 @@ namespace BotDLL.Model.QuickCharts
                      break;
                   case < 60:
                      data2List.Add(monthStatisticsItem.MaxPlayers);
-                     break;
-                  default:
                      break;
                }
 

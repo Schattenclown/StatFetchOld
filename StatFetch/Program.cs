@@ -189,10 +189,10 @@ namespace StatFetch
 
                      UpTime upTime = new()
                      {
-                        ServerInfoId = serverStatItem.ServerInfoId,
-                        Successful = 0,
-                        Unsuccessful = 0,
-                        InPercent = 0
+                              ServerInfoId = serverStatItem.ServerInfoId,
+                              Successful = 0,
+                              Unsuccessful = 0,
+                              InPercent = 0
                      };
                      UpTime.Add(upTime);
                   }

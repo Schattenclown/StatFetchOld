@@ -22,11 +22,11 @@ namespace BotDLL.Persistence
          {
             UpTime upTimeObj = new()
             {
-               UpTimeId = mySqlDataReader.GetUInt16("UpTimeId"),
-               ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
-               Successful = mySqlDataReader.GetInt32("Successful"),
-               Unsuccessful = mySqlDataReader.GetInt32("Unsuccessful"),
-               InPercent = mySqlDataReader.GetDouble("InPercent")
+                     UpTimeId = mySqlDataReader.GetUInt16("UpTimeId"),
+                     ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
+                     Successful = mySqlDataReader.GetInt32("Successful"),
+                     Unsuccessful = mySqlDataReader.GetInt32("Unsuccessful"),
+                     InPercent = mySqlDataReader.GetDouble("InPercent")
             };
             upTimeList.Add(upTimeObj);
          }

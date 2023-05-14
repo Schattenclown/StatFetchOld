@@ -23,21 +23,21 @@ namespace BotDLL.Persistence
             {
                MonthStatistics monthStatisticsObj = new()
                {
-                  Date = mySqlDataReader.GetDateTime("Date"),
-                  MaxPlayers = mySqlDataReader.GetUInt16("MaxPlayers")
+                        Date = mySqlDataReader.GetDateTime("Date"),
+                        MaxPlayers = mySqlDataReader.GetUInt16("MaxPlayers")
                };
                monthStatisticsList.Add(monthStatisticsObj);
             }
 
             ServerInfo? serverInfoObj = new()
             {
-               ServerInfoId = serverInfoItem.ServerInfoId,
-               Name = serverInfoItem.Name,
-               DynDnsAddress = serverInfoItem.DynDnsAddress,
-               Port = serverInfoItem.Port,
-               Game = serverInfoItem.Game,
-               UpTimeInPercent = serverInfoItem.UpTimeInPercent,
-               MonthStatisticsList = monthStatisticsList
+                     ServerInfoId = serverInfoItem.ServerInfoId,
+                     Name = serverInfoItem.Name,
+                     DynDnsAddress = serverInfoItem.DynDnsAddress,
+                     Port = serverInfoItem.Port,
+                     Game = serverInfoItem.Game,
+                     UpTimeInPercent = serverInfoItem.UpTimeInPercent,
+                     MonthStatisticsList = monthStatisticsList
             };
             serverInfoListWithMS.Add(serverInfoObj);
             DB_Connection.CloseDB(mySqlConnection);
@@ -59,8 +59,8 @@ namespace BotDLL.Persistence
          {
             MonthStatistics monthStatisticsObj = new()
             {
-               Date = mySqlDataReader.GetDateTime("Date"),
-               MaxPlayers = mySqlDataReader.GetUInt16("MaxPlayers")
+                     Date = mySqlDataReader.GetDateTime("Date"),
+                     MaxPlayers = mySqlDataReader.GetUInt16("MaxPlayers")
             };
             monthStatisticsList.Add(monthStatisticsObj);
          }

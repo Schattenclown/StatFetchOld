@@ -18,11 +18,11 @@ namespace BotDLL.Persistence
          {
             ServerInfo? serverInfoObj = new()
             {
-               ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
-               Name = mySqlDataReader.GetString("Name"),
-               DynDnsAddress = mySqlDataReader.GetString("DynDnsAddress"),
-               Port = mySqlDataReader.GetUInt16("Port"),
-               UpTimeInPercent = mySqlDataReader.GetDouble("UpTimeInPercent")
+                     ServerInfoId = mySqlDataReader.GetUInt16("ServerInfoId"),
+                     Name = mySqlDataReader.GetString("Name"),
+                     DynDnsAddress = mySqlDataReader.GetString("DynDnsAddress"),
+                     Port = mySqlDataReader.GetUInt16("Port"),
+                     UpTimeInPercent = mySqlDataReader.GetDouble("UpTimeInPercent")
             };
             if (mySqlDataReader.GetString("Game") == "Minecraft")
             {

@@ -9,8 +9,6 @@ using DisCatSharp.ApplicationCommands.Attributes;
 using DisCatSharp.ApplicationCommands.Context;
 using DisCatSharp.Entities;
 using DisCatSharp.Enums;
-using Org.BouncyCastle.Asn1.Crmf;
-using System.Threading.Channels;
 
 namespace BotDLL.Model.BotCom.Discord.AppCommands
 {
@@ -91,11 +89,11 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
 
          DCUserData dCUserDataObj = new()
          {
-            ServerInfoId = serverStatObj.ServerInfoId,
-            AuthorId = interactionContext.Member.Id,
-            ChannelId = interactionContext.Channel.Id,
-            Abo = abo,
-            IsMinimalAbo = isMinimal
+                  ServerInfoId = serverStatObj.ServerInfoId,
+                  AuthorId = interactionContext.Member.Id,
+                  ChannelId = interactionContext.Channel.Id,
+                  Abo = abo,
+                  IsMinimalAbo = isMinimal
          };
 
          foreach (DCUserData dCUserDataItem in dCUserDataList)
@@ -117,7 +115,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
 
          DiscordEmbedBuilder discordEmbedBuilder = new()
          {
-            Color = new DiscordColor(255, 0, 255)
+                  Color = new DiscordColor(255, 0, 255)
          };
 
          if (abo && isMinimal)
@@ -183,7 +181,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
 
          DiscordEmbedBuilder discordEmbedBuilder = new()
          {
-            Color = new DiscordColor(255, 0, 255)
+                  Color = new DiscordColor(255, 0, 255)
          };
          discordEmbedBuilder.WithDescription(interactionContext.Member.Mention);
          discordEmbedBuilder.WithThumbnail("https://i.imgur.com/2OqzCvU.png");
@@ -237,12 +235,12 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             {
                aboType = "MINIMAL";
             }
-            
+
             if (serverInfoName != null)
             {
                if (!discordEmbedBuilder.Fields.Any(x => x.Name.Contains(serverInfoName) && x.Value.Contains(dCUserDataItem.ChannelId.ToString())))
                {
-                  discordEmbedBuilder.AddField(new DiscordEmbedField($"{aboType} - {serverInfoName}", "<#" + dCUserDataItem.ChannelId.ToString() + ">"));
+                  discordEmbedBuilder.AddField(new DiscordEmbedField($"{aboType} - {serverInfoName}", "<#" + dCUserDataItem.ChannelId + ">"));
                }
             }
          }
@@ -473,8 +471,8 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
 
          DiscordEmbedBuilder discordEmbedBuilder = new()
          {
-            Description = "This is the list for all registered servers",
-            Color = new DiscordColor(255, 0, 255)
+                  Description = "This is the list for all registered servers",
+                  Color = new DiscordColor(255, 0, 255)
          };
 
          foreach (ServerStat serverStatItem in serverStatListLive)
@@ -584,7 +582,7 @@ namespace BotDLL.Model.BotCom.Discord.AppCommands
             break;
          }
 
-         
+
          ServerStat serverStatObj = ServerStat.CreateObj(serverInfoObj);
 
          DiscordEmbedBuilder discordEmbedBuilder = new();

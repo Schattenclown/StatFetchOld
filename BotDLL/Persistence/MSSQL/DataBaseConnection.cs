@@ -22,12 +22,12 @@ namespace BotDLL.Persistence.MSSQL
          {
             ServerUsageObj serverUsageObj = new()
             {
-               ID = reader.GetInt32(reader.GetOrdinal("ID")),
-               DynDnsAddress = reader.GetString(reader.GetOrdinal("DynDnsAddress")),
-               Port = reader.GetInt32(reader.GetOrdinal("Port")),
-               CPUUsage = reader.GetDouble(reader.GetOrdinal("CPUUsage")),
-               RAMUsage = reader.GetInt32(reader.GetOrdinal("RAMUsage")),
-               UpdatedTimeStamp = reader.GetDateTime(reader.GetOrdinal("UpdatedTimeStamp"))
+                     ID = reader.GetInt32(reader.GetOrdinal("ID")),
+                     DynDnsAddress = reader.GetString(reader.GetOrdinal("DynDnsAddress")),
+                     Port = reader.GetInt32(reader.GetOrdinal("Port")),
+                     CPUUsage = reader.GetDouble(reader.GetOrdinal("CPUUsage")),
+                     RAMUsage = reader.GetInt32(reader.GetOrdinal("RAMUsage")),
+                     UpdatedTimeStamp = reader.GetDateTime(reader.GetOrdinal("UpdatedTimeStamp"))
             };
             serverUsages.Add(serverUsageObj);
          }
@@ -50,12 +50,12 @@ namespace BotDLL.Persistence.MSSQL
          {
             serverUsageObj = new ServerUsageObj
             {
-               ID = reader.GetInt32(reader.GetOrdinal("ID")),
-               DynDnsAddress = reader.GetString(reader.GetOrdinal("DynDnsAddress")),
-               Port = reader.GetInt32(reader.GetOrdinal("Port")),
-               CPUUsage = reader.GetDouble(reader.GetOrdinal("CPUUsage")),
-               RAMUsage = reader.GetInt32(reader.GetOrdinal("RAMUsage")),
-               UpdatedTimeStamp = reader.GetDateTime(reader.GetOrdinal("UpdatedTimeStamp"))
+                     ID = reader.GetInt32(reader.GetOrdinal("ID")),
+                     DynDnsAddress = reader.GetString(reader.GetOrdinal("DynDnsAddress")),
+                     Port = reader.GetInt32(reader.GetOrdinal("Port")),
+                     CPUUsage = reader.GetDouble(reader.GetOrdinal("CPUUsage")),
+                     RAMUsage = reader.GetInt32(reader.GetOrdinal("RAMUsage")),
+                     UpdatedTimeStamp = reader.GetDateTime(reader.GetOrdinal("UpdatedTimeStamp"))
             };
          }
 
